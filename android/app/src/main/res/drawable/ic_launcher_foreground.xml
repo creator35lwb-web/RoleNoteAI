@@ -24,11 +24,9 @@
                 C44,32 46,28 46,24 C46,18 42,14 34,14 L22,14 L22,18
                 M28,20 L34,20 C38,20 40,22 40,26 C40,30 38,32 34,32 L28,32 Z"/>
 
-        <!-- AI indicator dot -->
-        <circle
+        <!-- AI indicator dot (circle as path) -->
+        <path
             android:fillColor="#10B981"
-            android:centerX="52"
-            android:centerY="48"
-            android:radius="4"/>
+            android:pathData="M48,48 a4,4 0 1,0 8,0 a4,4 0 1,0 -8,0 Z"/>
     </group>
 </vector>

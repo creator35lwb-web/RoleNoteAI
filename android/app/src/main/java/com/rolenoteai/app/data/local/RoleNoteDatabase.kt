@@ -23,7 +23,7 @@ import com.rolenoteai.app.data.local.entity.*
         ReminderEntity::class
     ],
     version = 1,
-    exportSchema = true
+    exportSchema = false
 )
 abstract class RoleNoteDatabase : RoomDatabase() {
 

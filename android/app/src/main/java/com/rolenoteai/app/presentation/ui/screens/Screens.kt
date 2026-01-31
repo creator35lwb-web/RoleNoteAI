@@ -507,6 +507,7 @@ fun OverviewScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoteListItem(
     note: Note,
@@ -910,7 +911,7 @@ fun SettingsScreen(
                 )
             }
 
-            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+            Divider(modifier = Modifier.padding(vertical = 16.dp))
 
             // Security Section
             Text(
@@ -932,7 +933,7 @@ fun SettingsScreen(
                 trailingContent = { Switch(checked = false, onCheckedChange = {}) }
             )
 
-            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+            Divider(modifier = Modifier.padding(vertical = 16.dp))
 
             Text(
                 text = "About",

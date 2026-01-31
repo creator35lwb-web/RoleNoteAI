@@ -203,6 +203,9 @@ interface RoleTemplateDao {
 
     @Query("SELECT COUNT(*) FROM role_templates")
     suspend fun getTemplateCount(): Int
+
+    @Query("DELETE FROM role_templates WHERE isBuiltIn = 1")
+    suspend fun deleteAllBuiltInTemplates()
 }
 
 /**

@@ -90,15 +90,16 @@ class EncryptedDatabaseFactory @Inject constructor(
     /**
      * Build an encrypted Room database
      */
-    inline fun <reified T : RoomDatabase> buildDatabase(
+    fun <T : RoomDatabase> buildDatabase(
+        databaseClass: Class<T>,
         name: String,
-        noinline migrations: (RoomDatabase.Builder<T>) -> RoomDatabase.Builder<T> = { it }
+        migrations: (RoomDatabase.Builder<T>) -> RoomDatabase.Builder<T> = { it }
     ): T {
         val factory = createSupportFactory()
 
         val builder = Room.databaseBuilder(
             context.applicationContext,
-            T::class.java,
+            databaseClass,
             name
         )
             .openHelperFactory(factory)
@@ -116,7 +117,7 @@ class EncryptedDatabaseFactory @Inject constructor(
             if (!dbFile.exists()) return true // Will be created
 
             // Try to open with current passphrase
-            val passphrase = getOrCreatePassphrase()
+            val passphrase = String(getOrCreatePassphrase(), Charsets.UTF_8)
             SQLiteDatabase.loadLibs(context)
             val db = SQLiteDatabase.openDatabase(
                 dbFile.absolutePath,
@@ -139,7 +140,7 @@ class EncryptedDatabaseFactory @Inject constructor(
             val dbFile = context.getDatabasePath(name)
             if (!dbFile.exists()) return true
 
-            val oldPassphrase = getOrCreatePassphrase()
+            val oldPassphrase = String(getOrCreatePassphrase(), Charsets.UTF_8)
             val newPassphrase = generateSecurePassphrase()
 
             SQLiteDatabase.loadLibs(context)

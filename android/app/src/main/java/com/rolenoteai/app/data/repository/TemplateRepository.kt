@@ -109,14 +109,22 @@ class TemplateRepository @Inject constructor(
 
     /**
      * Load built-in templates from assets on first launch
+     * Also reloads if fewer than expected templates are found
      */
     suspend fun initializeBuiltInTemplates() = withContext(Dispatchers.IO) {
-        val count = templateDao.getTemplateCount()
-        if (count > 0) {
-            return@withContext // Already initialized
-        }
+        try {
+            val count = templateDao.getTemplateCount()
+            val expectedCount = 19 // 11 functional + 8 c-suite
+            if (count >= expectedCount) {
+                return@withContext // Already initialized with all templates
+            }
 
-        val templates = mutableListOf<RoleTemplateEntity>()
+            // Clear any partial data and reload
+            if (count > 0) {
+                templateDao.deleteAllBuiltInTemplates()
+            }
+
+            val templates = mutableListOf<RoleTemplateEntity>()
 
         // Load functional templates
         val functionalTemplates = listOf(
@@ -149,6 +157,10 @@ class TemplateRepository @Inject constructor(
 
             // Set first template as active by default
             templateDao.activateTemplate(templates.first().id)
+        }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            // Continue without templates - they'll load next time
         }
     }
 

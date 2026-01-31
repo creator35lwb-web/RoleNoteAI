@@ -184,6 +184,8 @@ fun Reminder.toEntity(): ReminderEntity {
         message = message,
         triggerType = triggerType.value,
         triggerTime = triggerTime,
+        triggerEventId = null,
+        triggerContext = null,
         isRecurring = isRecurring,
         status = status.value,
         createdAt = createdAt

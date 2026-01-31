@@ -55,15 +55,32 @@ fun RoleNoteApp(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    // Determine start destination based on auth state
-    val startDestination = when (authState) {
-        is com.rolenoteai.app.core.security.AuthenticationManager.AuthState.SetupRequired -> Screen.Setup.route
-        is com.rolenoteai.app.core.security.AuthenticationManager.AuthState.Locked,
-        is com.rolenoteai.app.core.security.AuthenticationManager.AuthState.LockedOut -> Screen.Auth.route
-        is com.rolenoteai.app.core.security.AuthenticationManager.AuthState.Unlocked -> Screen.Overview.route
-    }
+    // Use a stable start destination - always start with Auth
+    // Navigation will redirect based on auth state
+    val startDestination = remember { Screen.Auth.route }
 
     val showBottomBar = currentRoute in bottomBarScreens.map { it.route }
+
+    // Handle auth state changes via navigation
+    LaunchedEffect(authState) {
+        when (authState) {
+            is com.rolenoteai.app.core.security.AuthenticationManager.AuthState.SetupRequired -> {
+                if (currentRoute != Screen.Setup.route) {
+                    navController.navigate(Screen.Setup.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
+            }
+            is com.rolenoteai.app.core.security.AuthenticationManager.AuthState.Unlocked -> {
+                if (currentRoute == Screen.Auth.route || currentRoute == Screen.Setup.route) {
+                    navController.navigate(Screen.Overview.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
+            }
+            else -> {}
+        }
+    }
 
     Scaffold(
         bottomBar = {

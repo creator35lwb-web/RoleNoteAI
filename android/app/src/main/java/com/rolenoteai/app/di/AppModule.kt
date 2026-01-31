@@ -58,7 +58,7 @@ object AppModule {
     fun provideRoleNoteDatabase(
         factory: EncryptedDatabaseFactory
     ): RoleNoteDatabase {
-        return factory.buildDatabase(RoleNoteDatabase.DATABASE_NAME)
+        return factory.buildDatabase(RoleNoteDatabase::class.java, RoleNoteDatabase.DATABASE_NAME)
     }
 
     // ==================== DAOs ====================
