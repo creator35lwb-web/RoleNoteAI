@@ -1,0 +1,52 @@
+{
+  "id": "ceo",
+  "name": "CEO",
+  "version": "1.0",
+  "description": "Chief Executive Officer - Vision and company leadership",
+  "category": "c-suite",
+  "icon": "emoji_events",
+  "color": "#7C3AED",
+  "capturePrompts": [
+    {
+      "field": "vision_area",
+      "prompt": "Vision/mission area?",
+      "required": false
+    },
+    {
+      "field": "stakeholder",
+      "prompt": "Key stakeholder?",
+      "required": false
+    },
+    {
+      "field": "priority",
+      "prompt": "Company priority?",
+      "required": false
+    }
+  ],
+  "suggestionRules": [
+    {
+      "trigger": "investor",
+      "action": "suggest_priority",
+      "priority": 2
+    },
+    {
+      "trigger": "board",
+      "action": "suggest_event",
+      "priority": 2
+    },
+    {
+      "trigger": "vision",
+      "action": "suggest_thread",
+      "priority": 1
+    }
+  ],
+  "execution": {
+    "signifiers_enabled": true,
+    "default_signifier": "task",
+    "migration_prompt_days": [5, 10, 21],
+    "weekly_review": true,
+    "monthly_review": true,
+    "auto_threading": true,
+    "stale_task_threshold_days": 7
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "id": "project-manager",
+  "name": "Project Manager",
+  "version": "1.0",
+  "description": "Track projects, milestones, and team coordination",
+  "category": "functional",
+  "icon": "assignment",
+  "color": "#3B82F6",
+  "capturePrompts": [
+    {
+      "field": "project",
+      "prompt": "Which project is this for?",
+      "required": false
+    },
+    {
+      "field": "deadline",
+      "prompt": "Is there a deadline?",
+      "required": false
+    },
+    {
+      "field": "assignee",
+      "prompt": "Who is responsible?",
+      "required": false
+    }
+  ],
+  "suggestionRules": [
+    {
+      "trigger": "meeting",
+      "action": "suggest_calendar_event",
+      "priority": 1
+    },
+    {
+      "trigger": "deadline",
+      "action": "suggest_reminder",
+      "priority": 2
+    },
+    {
+      "trigger": "milestone",
+      "action": "suggest_thread",
+      "priority": 1
+    }
+  ],
+  "execution": {
+    "signifiers_enabled": true,
+    "default_signifier": "task",
+    "migration_prompt_days": [3, 7, 14],
+    "weekly_review": true,
+    "monthly_review": true,
+    "auto_threading": true,
+    "stale_task_threshold_days": 5
+  }
+}

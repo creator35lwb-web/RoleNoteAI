@@ -1,0 +1,52 @@
+{
+  "id": "cro",
+  "name": "CRO",
+  "version": "1.0",
+  "description": "Chief Revenue Officer - Revenue and sales leadership",
+  "category": "c-suite",
+  "icon": "paid",
+  "color": "#16A34A",
+  "capturePrompts": [
+    {
+      "field": "deal",
+      "prompt": "Deal/opportunity?",
+      "required": false
+    },
+    {
+      "field": "pipeline",
+      "prompt": "Pipeline stage?",
+      "required": false
+    },
+    {
+      "field": "target",
+      "prompt": "Revenue target?",
+      "required": false
+    }
+  ],
+  "suggestionRules": [
+    {
+      "trigger": "deal",
+      "action": "suggest_priority",
+      "priority": 2
+    },
+    {
+      "trigger": "pipeline",
+      "action": "suggest_thread",
+      "priority": 1
+    },
+    {
+      "trigger": "forecast",
+      "action": "suggest_reminder",
+      "priority": 1
+    }
+  ],
+  "execution": {
+    "signifiers_enabled": true,
+    "default_signifier": "task",
+    "migration_prompt_days": [2, 5, 10],
+    "weekly_review": true,
+    "monthly_review": true,
+    "auto_threading": true,
+    "stale_task_threshold_days": 3
+  }
+}

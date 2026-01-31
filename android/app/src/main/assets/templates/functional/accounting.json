@@ -1,0 +1,52 @@
+{
+  "id": "accounting",
+  "name": "Accounting",
+  "version": "1.0",
+  "description": "Financial tracking, invoices, and expense management",
+  "category": "functional",
+  "icon": "account_balance",
+  "color": "#6366F1",
+  "capturePrompts": [
+    {
+      "field": "amount",
+      "prompt": "Amount involved?",
+      "required": false
+    },
+    {
+      "field": "category",
+      "prompt": "Expense/income category?",
+      "required": false
+    },
+    {
+      "field": "due_date",
+      "prompt": "Payment due date?",
+      "required": false
+    }
+  ],
+  "suggestionRules": [
+    {
+      "trigger": "invoice",
+      "action": "suggest_reminder",
+      "priority": 2
+    },
+    {
+      "trigger": "payment",
+      "action": "suggest_event",
+      "priority": 1
+    },
+    {
+      "trigger": "expense",
+      "action": "suggest_thread",
+      "priority": 1
+    }
+  ],
+  "execution": {
+    "signifiers_enabled": true,
+    "default_signifier": "task",
+    "migration_prompt_days": [1, 3, 7],
+    "weekly_review": true,
+    "monthly_review": true,
+    "auto_threading": true,
+    "stale_task_threshold_days": 3
+  }
+}

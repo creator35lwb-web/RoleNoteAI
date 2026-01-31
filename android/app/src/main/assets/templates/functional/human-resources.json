@@ -1,0 +1,52 @@
+{
+  "id": "human-resources",
+  "name": "Human Resources",
+  "version": "1.0",
+  "description": "Employee management, hiring, and HR processes",
+  "category": "functional",
+  "icon": "people",
+  "color": "#EC4899",
+  "capturePrompts": [
+    {
+      "field": "employee",
+      "prompt": "Which employee/candidate?",
+      "required": false
+    },
+    {
+      "field": "process",
+      "prompt": "HR process type?",
+      "required": false
+    },
+    {
+      "field": "deadline",
+      "prompt": "Deadline/date?",
+      "required": false
+    }
+  ],
+  "suggestionRules": [
+    {
+      "trigger": "interview",
+      "action": "suggest_event",
+      "priority": 2
+    },
+    {
+      "trigger": "onboarding",
+      "action": "suggest_thread",
+      "priority": 1
+    },
+    {
+      "trigger": "review",
+      "action": "suggest_reminder",
+      "priority": 1
+    }
+  ],
+  "execution": {
+    "signifiers_enabled": true,
+    "default_signifier": "task",
+    "migration_prompt_days": [3, 7, 14],
+    "weekly_review": true,
+    "monthly_review": true,
+    "auto_threading": true,
+    "stale_task_threshold_days": 5
+  }
+}

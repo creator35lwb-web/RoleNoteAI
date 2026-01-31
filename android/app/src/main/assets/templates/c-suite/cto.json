@@ -1,0 +1,52 @@
+{
+  "id": "cto",
+  "name": "CTO",
+  "version": "1.0",
+  "description": "Chief Technology Officer - Technology strategy and innovation",
+  "category": "c-suite",
+  "icon": "memory",
+  "color": "#0891B2",
+  "capturePrompts": [
+    {
+      "field": "technology",
+      "prompt": "Technology/platform?",
+      "required": false
+    },
+    {
+      "field": "team",
+      "prompt": "Engineering team?",
+      "required": false
+    },
+    {
+      "field": "roadmap",
+      "prompt": "Roadmap item?",
+      "required": false
+    }
+  ],
+  "suggestionRules": [
+    {
+      "trigger": "architecture",
+      "action": "suggest_thread",
+      "priority": 1
+    },
+    {
+      "trigger": "security",
+      "action": "suggest_priority",
+      "priority": 2
+    },
+    {
+      "trigger": "innovation",
+      "action": "suggest_explore",
+      "priority": 1
+    }
+  ],
+  "execution": {
+    "signifiers_enabled": true,
+    "default_signifier": "task",
+    "migration_prompt_days": [3, 7, 14],
+    "weekly_review": true,
+    "monthly_review": true,
+    "auto_threading": true,
+    "stale_task_threshold_days": 5
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "id": "developer",
+  "name": "Developer",
+  "version": "1.0",
+  "description": "Code tasks, bugs, and technical notes",
+  "category": "functional",
+  "icon": "code",
+  "color": "#10B981",
+  "capturePrompts": [
+    {
+      "field": "repository",
+      "prompt": "Which repo/codebase?",
+      "required": false
+    },
+    {
+      "field": "ticket",
+      "prompt": "Related ticket/issue?",
+      "required": false
+    },
+    {
+      "field": "priority",
+      "prompt": "Priority level?",
+      "required": false
+    }
+  ],
+  "suggestionRules": [
+    {
+      "trigger": "bug",
+      "action": "suggest_priority",
+      "priority": 2
+    },
+    {
+      "trigger": "feature",
+      "action": "suggest_thread",
+      "priority": 1
+    },
+    {
+      "trigger": "deploy",
+      "action": "suggest_event",
+      "priority": 2
+    }
+  ],
+  "execution": {
+    "signifiers_enabled": true,
+    "default_signifier": "task",
+    "migration_prompt_days": [2, 5, 10],
+    "weekly_review": true,
+    "monthly_review": false,
+    "auto_threading": true,
+    "stale_task_threshold_days": 3
+  }
+}

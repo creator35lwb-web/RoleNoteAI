@@ -1,0 +1,52 @@
+{
+  "id": "coo",
+  "name": "COO",
+  "version": "1.0",
+  "description": "Chief Operating Officer - Operations and execution",
+  "category": "c-suite",
+  "icon": "settings",
+  "color": "#059669",
+  "capturePrompts": [
+    {
+      "field": "department",
+      "prompt": "Which department?",
+      "required": false
+    },
+    {
+      "field": "process",
+      "prompt": "Process/workflow?",
+      "required": false
+    },
+    {
+      "field": "kpi",
+      "prompt": "Related KPI?",
+      "required": false
+    }
+  ],
+  "suggestionRules": [
+    {
+      "trigger": "efficiency",
+      "action": "suggest_explore",
+      "priority": 1
+    },
+    {
+      "trigger": "process",
+      "action": "suggest_thread",
+      "priority": 1
+    },
+    {
+      "trigger": "bottleneck",
+      "action": "suggest_priority",
+      "priority": 2
+    }
+  ],
+  "execution": {
+    "signifiers_enabled": true,
+    "default_signifier": "task",
+    "migration_prompt_days": [3, 7, 14],
+    "weekly_review": true,
+    "monthly_review": true,
+    "auto_threading": true,
+    "stale_task_threshold_days": 5
+  }
+}

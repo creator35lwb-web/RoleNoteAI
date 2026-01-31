@@ -1,11 +1,15 @@
 package com.rolenoteai.app.di
 
 import android.content.Context
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.rolenoteai.app.core.database.EncryptedDatabaseFactory
 import com.rolenoteai.app.core.security.AuthenticationManager
 import com.rolenoteai.app.core.validation.InputValidator
 import com.rolenoteai.app.data.local.RoleNoteDatabase
 import com.rolenoteai.app.data.local.dao.*
+import com.rolenoteai.app.data.repository.NoteRepository
+import com.rolenoteai.app.data.repository.TemplateRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -93,5 +97,37 @@ object AppModule {
     @Singleton
     fun provideReminderDao(database: RoleNoteDatabase): ReminderDao {
         return database.reminderDao()
+    }
+
+    // ==================== JSON ====================
+
+    @Provides
+    @Singleton
+    fun provideGson(): Gson {
+        return GsonBuilder()
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+            .create()
+    }
+
+    // ==================== Repositories ====================
+
+    @Provides
+    @Singleton
+    fun provideNoteRepository(
+        noteDao: NoteDao,
+        auditLogDao: AuditLogDao,
+        inputValidator: InputValidator
+    ): NoteRepository {
+        return NoteRepository(noteDao, auditLogDao, inputValidator)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTemplateRepository(
+        @ApplicationContext context: Context,
+        roleTemplateDao: RoleTemplateDao,
+        gson: Gson
+    ): TemplateRepository {
+        return TemplateRepository(context, roleTemplateDao, gson)
     }
 }

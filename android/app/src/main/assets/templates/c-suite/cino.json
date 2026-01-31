@@ -1,0 +1,52 @@
+{
+  "id": "cino",
+  "name": "CINO",
+  "version": "1.0",
+  "description": "Chief Innovation Officer - Innovation and R&D leadership",
+  "category": "c-suite",
+  "icon": "lightbulb",
+  "color": "#DC2626",
+  "capturePrompts": [
+    {
+      "field": "innovation_area",
+      "prompt": "Innovation area?",
+      "required": false
+    },
+    {
+      "field": "research",
+      "prompt": "Research topic?",
+      "required": false
+    },
+    {
+      "field": "patent",
+      "prompt": "IP/Patent related?",
+      "required": false
+    }
+  ],
+  "suggestionRules": [
+    {
+      "trigger": "prototype",
+      "action": "suggest_thread",
+      "priority": 1
+    },
+    {
+      "trigger": "patent",
+      "action": "suggest_priority",
+      "priority": 2
+    },
+    {
+      "trigger": "research",
+      "action": "suggest_explore",
+      "priority": 1
+    }
+  ],
+  "execution": {
+    "signifiers_enabled": true,
+    "default_signifier": "idea",
+    "migration_prompt_days": [7, 14, 30],
+    "weekly_review": true,
+    "monthly_review": true,
+    "auto_threading": true,
+    "stale_task_threshold_days": 10
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "id": "executive",
+  "name": "Executive",
+  "version": "1.0",
+  "description": "General executive leadership and strategic decisions",
+  "category": "c-suite",
+  "icon": "stars",
+  "color": "#1E40AF",
+  "capturePrompts": [
+    {
+      "field": "strategic_goal",
+      "prompt": "Which strategic goal?",
+      "required": false
+    },
+    {
+      "field": "impact",
+      "prompt": "Business impact?",
+      "required": false
+    },
+    {
+      "field": "timeline",
+      "prompt": "Timeline?",
+      "required": false
+    }
+  ],
+  "suggestionRules": [
+    {
+      "trigger": "board",
+      "action": "suggest_event",
+      "priority": 2
+    },
+    {
+      "trigger": "strategy",
+      "action": "suggest_thread",
+      "priority": 1
+    },
+    {
+      "trigger": "decision",
+      "action": "suggest_priority",
+      "priority": 2
+    }
+  ],
+  "execution": {
+    "signifiers_enabled": true,
+    "default_signifier": "task",
+    "migration_prompt_days": [3, 7, 14],
+    "weekly_review": true,
+    "monthly_review": true,
+    "auto_threading": true,
+    "stale_task_threshold_days": 7
+  }
+}

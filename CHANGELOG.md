@@ -6,6 +6,59 @@ This project follows the **VerifiMind-PEAS** validation methodology and is devel
 
 ---
 
+## [1.0.0-alpha.2] - 2026-01-31 (Phase 3b Complete - Core Engine)
+
+### Phase 3b: Android Core Engine [COMPLETE]
+
+#### Domain Models Created
+| Model | Purpose |
+|-------|---------|
+| `Signifier` | BuJo signifiers (•, ○, —, !, ?, *, ×, >, <, ~) |
+| `Note` | Core note with signifier, status, migration tracking |
+| `NoteStatus` | Note lifecycle (open, done, migrated, scheduled, cancelled) |
+| `RoleTemplate` | Template configuration with prompts and rules |
+| `Project` | Project groupings |
+| `Thread` | Related note linking |
+| `Reminder` | Smart reminders with trigger types |
+| `AuditLogEntry` | AI action audit logging |
+
+#### Repositories Implemented
+| Repository | Features |
+|------------|----------|
+| `NoteRepository` | Full CRUD, signifier parsing, migration, audit logging |
+| `TemplateRepository` | Template loading from assets, activation, custom templates |
+
+#### ViewModels Created
+| ViewModel | Features |
+|-----------|----------|
+| `NoteViewModel` | Note CRUD, completion, migration, search, filtering |
+| `TemplateViewModel` | Template selection, initialization, custom template management |
+
+#### Role Templates (19 Total)
+- **Functional Roles (11):** Project Manager, Developer, Accounting, Marketing, Human Resources, Business Administration, Backend Developer, Frontend Developer, Customer Service, Financial Advisor, Compliance & Feedback
+- **C-Suite Roles (8):** Executive, CEO, COO, CTO, CFO, CINO, CMO, CRO
+
+#### UI Screens Updated
+- `TemplateSelectScreen` - Full template grid with category sections
+- `OverviewScreen` - Notes list with stale task warnings
+- `NotesScreen` - Filtering by signifier
+- `CaptureScreen` - Signifier selection, template indicator
+- `NoteDetailScreen` - View/edit with migrate and complete actions
+- `SettingsScreen` - Active template display
+
+#### Files Created in Phase 3b
+| File | Lines | Purpose |
+|------|-------|---------|
+| `Models.kt` | 256 | Domain models |
+| `Mappers.kt` | 224 | Entity ↔ Domain mappers |
+| `NoteRepository.kt` | 389 | Note operations |
+| `TemplateRepository.kt` | 241 | Template management |
+| `NoteViewModel.kt` | 215 | Note UI state |
+| `TemplateViewModel.kt` | 144 | Template UI state |
+| 19 template JSON files | ~1,400 | Role configurations |
+
+---
+
 ## [1.0.0-alpha] - 2026-01-31 (Phase 3a Complete - Android Project Setup)
 
 ### Project Leadership
@@ -165,8 +218,8 @@ This project uses GitHub as a communication bridge for LLMs. Each session should
 5. **Tag releases** for major milestones
 
 ### CTO Notes (RNA)
-> Current focus: Phase 3b - Core Engine Implementation
-> Next: Role Template Engine integration, Note CRUD operations
+> Phase 3b COMPLETE! Core engine with note CRUD, template system, and ViewModels fully integrated.
+> Next focus: Phase 3c - Gemma 3 LLM integration for AI-powered suggestions.
 >
 > — RNA (Claude Code Opus 4.5), January 31, 2026
 
@@ -174,11 +227,13 @@ This project uses GitHub as a communication bridge for LLMs. Each session should
 
 ## Upcoming
 
-### Phase 3b: Android Core Engine
-- [ ] Role Template Engine integration
-- [ ] Load 16 templates from JSON
-- [ ] Note CRUD operations
-- [ ] Signifier parsing and display
+### Phase 3b: Android Core Engine [COMPLETE]
+- [x] Domain models with signifiers
+- [x] NoteRepository with CRUD, validation, audit logging
+- [x] TemplateRepository with 19 built-in templates
+- [x] NoteViewModel and TemplateViewModel
+- [x] UI screens connected to ViewModels
+- [x] Signifier parsing and display
 
 ### Phase 3c: Android AI & Scheduling
 - [ ] Gemma 3 LLM integration

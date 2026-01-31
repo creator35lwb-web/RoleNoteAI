@@ -1,0 +1,52 @@
+{
+  "id": "customer-services",
+  "name": "Customer Service",
+  "version": "1.0",
+  "description": "Customer support, tickets, and service requests",
+  "category": "functional",
+  "icon": "support_agent",
+  "color": "#F97316",
+  "capturePrompts": [
+    {
+      "field": "customer",
+      "prompt": "Customer name/ID?",
+      "required": false
+    },
+    {
+      "field": "ticket",
+      "prompt": "Ticket number?",
+      "required": false
+    },
+    {
+      "field": "urgency",
+      "prompt": "Urgency level?",
+      "required": false
+    }
+  ],
+  "suggestionRules": [
+    {
+      "trigger": "urgent",
+      "action": "suggest_priority",
+      "priority": 2
+    },
+    {
+      "trigger": "follow-up",
+      "action": "suggest_reminder",
+      "priority": 1
+    },
+    {
+      "trigger": "escalate",
+      "action": "suggest_priority",
+      "priority": 2
+    }
+  ],
+  "execution": {
+    "signifiers_enabled": true,
+    "default_signifier": "task",
+    "migration_prompt_days": [1, 2, 3],
+    "weekly_review": true,
+    "monthly_review": false,
+    "auto_threading": true,
+    "stale_task_threshold_days": 2
+  }
+}

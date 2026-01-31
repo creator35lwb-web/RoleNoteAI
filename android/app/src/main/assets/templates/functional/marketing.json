@@ -1,0 +1,52 @@
+{
+  "id": "marketing",
+  "name": "Marketing",
+  "version": "1.0",
+  "description": "Campaigns, content, and brand initiatives",
+  "category": "functional",
+  "icon": "campaign",
+  "color": "#F59E0B",
+  "capturePrompts": [
+    {
+      "field": "campaign",
+      "prompt": "Which campaign?",
+      "required": false
+    },
+    {
+      "field": "channel",
+      "prompt": "Marketing channel?",
+      "required": false
+    },
+    {
+      "field": "target_audience",
+      "prompt": "Target audience?",
+      "required": false
+    }
+  ],
+  "suggestionRules": [
+    {
+      "trigger": "launch",
+      "action": "suggest_event",
+      "priority": 2
+    },
+    {
+      "trigger": "content",
+      "action": "suggest_thread",
+      "priority": 1
+    },
+    {
+      "trigger": "deadline",
+      "action": "suggest_reminder",
+      "priority": 2
+    }
+  ],
+  "execution": {
+    "signifiers_enabled": true,
+    "default_signifier": "task",
+    "migration_prompt_days": [2, 5, 10],
+    "weekly_review": true,
+    "monthly_review": true,
+    "auto_threading": true,
+    "stale_task_threshold_days": 4
+  }
+}

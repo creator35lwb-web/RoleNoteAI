@@ -1,0 +1,52 @@
+{
+  "id": "cfo",
+  "name": "CFO",
+  "version": "1.0",
+  "description": "Chief Financial Officer - Financial strategy and planning",
+  "category": "c-suite",
+  "icon": "account_balance_wallet",
+  "color": "#CA8A04",
+  "capturePrompts": [
+    {
+      "field": "budget",
+      "prompt": "Budget area?",
+      "required": false
+    },
+    {
+      "field": "quarter",
+      "prompt": "Fiscal quarter?",
+      "required": false
+    },
+    {
+      "field": "amount",
+      "prompt": "Amount involved?",
+      "required": false
+    }
+  ],
+  "suggestionRules": [
+    {
+      "trigger": "budget",
+      "action": "suggest_thread",
+      "priority": 1
+    },
+    {
+      "trigger": "audit",
+      "action": "suggest_priority",
+      "priority": 2
+    },
+    {
+      "trigger": "forecast",
+      "action": "suggest_reminder",
+      "priority": 1
+    }
+  ],
+  "execution": {
+    "signifiers_enabled": true,
+    "default_signifier": "task",
+    "migration_prompt_days": [3, 7, 14],
+    "weekly_review": true,
+    "monthly_review": true,
+    "auto_threading": true,
+    "stale_task_threshold_days": 5
+  }
+}

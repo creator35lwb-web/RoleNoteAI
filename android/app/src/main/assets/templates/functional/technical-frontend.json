@@ -1,0 +1,52 @@
+{
+  "id": "technical-frontend",
+  "name": "Frontend Developer",
+  "version": "1.0",
+  "description": "UI/UX development, components, and user interfaces",
+  "category": "functional",
+  "icon": "web",
+  "color": "#06B6D4",
+  "capturePrompts": [
+    {
+      "field": "component",
+      "prompt": "Which component/page?",
+      "required": false
+    },
+    {
+      "field": "design",
+      "prompt": "Design reference?",
+      "required": false
+    },
+    {
+      "field": "browser",
+      "prompt": "Browser compatibility?",
+      "required": false
+    }
+  ],
+  "suggestionRules": [
+    {
+      "trigger": "ui",
+      "action": "suggest_thread",
+      "priority": 1
+    },
+    {
+      "trigger": "responsive",
+      "action": "suggest_explore",
+      "priority": 1
+    },
+    {
+      "trigger": "animation",
+      "action": "suggest_explore",
+      "priority": 1
+    }
+  ],
+  "execution": {
+    "signifiers_enabled": true,
+    "default_signifier": "task",
+    "migration_prompt_days": [2, 5, 10],
+    "weekly_review": true,
+    "monthly_review": false,
+    "auto_threading": true,
+    "stale_task_threshold_days": 3
+  }
+}

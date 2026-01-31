@@ -1,0 +1,52 @@
+{
+  "id": "cmo-monitor",
+  "name": "CMO",
+  "version": "1.0",
+  "description": "Chief Marketing Officer - Brand and market leadership",
+  "category": "c-suite",
+  "icon": "analytics",
+  "color": "#EA580C",
+  "capturePrompts": [
+    {
+      "field": "brand",
+      "prompt": "Brand/product?",
+      "required": false
+    },
+    {
+      "field": "market",
+      "prompt": "Target market?",
+      "required": false
+    },
+    {
+      "field": "campaign",
+      "prompt": "Campaign name?",
+      "required": false
+    }
+  ],
+  "suggestionRules": [
+    {
+      "trigger": "launch",
+      "action": "suggest_event",
+      "priority": 2
+    },
+    {
+      "trigger": "brand",
+      "action": "suggest_thread",
+      "priority": 1
+    },
+    {
+      "trigger": "competitor",
+      "action": "suggest_explore",
+      "priority": 1
+    }
+  ],
+  "execution": {
+    "signifiers_enabled": true,
+    "default_signifier": "task",
+    "migration_prompt_days": [3, 7, 14],
+    "weekly_review": true,
+    "monthly_review": true,
+    "auto_threading": true,
+    "stale_task_threshold_days": 5
+  }
+}

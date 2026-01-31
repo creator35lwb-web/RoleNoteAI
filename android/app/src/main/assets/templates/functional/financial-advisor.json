@@ -1,0 +1,52 @@
+{
+  "id": "financial-advisor",
+  "name": "Financial Advisor",
+  "version": "1.0",
+  "description": "Investment tracking, financial planning, and client management",
+  "category": "functional",
+  "icon": "trending_up",
+  "color": "#22C55E",
+  "capturePrompts": [
+    {
+      "field": "client",
+      "prompt": "Client name?",
+      "required": false
+    },
+    {
+      "field": "portfolio",
+      "prompt": "Portfolio/account?",
+      "required": false
+    },
+    {
+      "field": "action_date",
+      "prompt": "Action date?",
+      "required": false
+    }
+  ],
+  "suggestionRules": [
+    {
+      "trigger": "review",
+      "action": "suggest_event",
+      "priority": 1
+    },
+    {
+      "trigger": "rebalance",
+      "action": "suggest_reminder",
+      "priority": 2
+    },
+    {
+      "trigger": "report",
+      "action": "suggest_thread",
+      "priority": 1
+    }
+  ],
+  "execution": {
+    "signifiers_enabled": true,
+    "default_signifier": "task",
+    "migration_prompt_days": [3, 7, 14],
+    "weekly_review": true,
+    "monthly_review": true,
+    "auto_threading": true,
+    "stale_task_threshold_days": 5
+  }
+}

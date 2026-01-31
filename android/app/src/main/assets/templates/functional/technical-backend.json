@@ -1,0 +1,52 @@
+{
+  "id": "technical-backend",
+  "name": "Backend Developer",
+  "version": "1.0",
+  "description": "Server-side development, APIs, and databases",
+  "category": "functional",
+  "icon": "dns",
+  "color": "#14B8A6",
+  "capturePrompts": [
+    {
+      "field": "service",
+      "prompt": "Which service/API?",
+      "required": false
+    },
+    {
+      "field": "database",
+      "prompt": "Database involved?",
+      "required": false
+    },
+    {
+      "field": "environment",
+      "prompt": "Environment (dev/staging/prod)?",
+      "required": false
+    }
+  ],
+  "suggestionRules": [
+    {
+      "trigger": "api",
+      "action": "suggest_thread",
+      "priority": 1
+    },
+    {
+      "trigger": "migration",
+      "action": "suggest_priority",
+      "priority": 2
+    },
+    {
+      "trigger": "deploy",
+      "action": "suggest_event",
+      "priority": 2
+    }
+  ],
+  "execution": {
+    "signifiers_enabled": true,
+    "default_signifier": "task",
+    "migration_prompt_days": [2, 5, 10],
+    "weekly_review": true,
+    "monthly_review": false,
+    "auto_threading": true,
+    "stale_task_threshold_days": 3
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "id": "business-administration",
+  "name": "Business Administration",
+  "version": "1.0",
+  "description": "General business operations and administration",
+  "category": "functional",
+  "icon": "business",
+  "color": "#8B5CF6",
+  "capturePrompts": [
+    {
+      "field": "department",
+      "prompt": "Which department?",
+      "required": false
+    },
+    {
+      "field": "priority",
+      "prompt": "Priority level?",
+      "required": false
+    },
+    {
+      "field": "stakeholder",
+      "prompt": "Key stakeholder?",
+      "required": false
+    }
+  ],
+  "suggestionRules": [
+    {
+      "trigger": "meeting",
+      "action": "suggest_event",
+      "priority": 1
+    },
+    {
+      "trigger": "report",
+      "action": "suggest_reminder",
+      "priority": 2
+    },
+    {
+      "trigger": "policy",
+      "action": "suggest_thread",
+      "priority": 1
+    }
+  ],
+  "execution": {
+    "signifiers_enabled": true,
+    "default_signifier": "task",
+    "migration_prompt_days": [3, 7, 14],
+    "weekly_review": true,
+    "monthly_review": true,
+    "auto_threading": true,
+    "stale_task_threshold_days": 5
+  }
+}
