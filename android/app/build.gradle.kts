@@ -1,3 +1,7 @@
+// RoleNote AI - App Build Configuration
+// CTO: RNA (Claude Code Opus 4.5)
+// Fixed for Android Studio compatibility
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -58,7 +62,8 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.6"
+        // Must match Kotlin version 1.9.21
+        kotlinCompilerExtensionVersion = "1.5.7"
     }
 
     packaging {
@@ -106,23 +111,8 @@ dependencies {
     ksp("com.google.dagger:hilt-compiler:2.48.1")
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
 
-    // ==================== AI/ML Layer ====================
-    // Google AI Edge SDK (Gemma 3)
-    implementation("com.google.ai.edge.litert:litert:1.0.1")
-
-    // ONNX Runtime (all-MiniLM-L6-v2 embeddings)
-    implementation("com.microsoft.onnxruntime:onnxruntime-android:1.16.3")
-
-    // ==================== Vector Database ====================
-    // FAISS will be integrated via JNI - placeholder for now
-    // implementation("com.github.jelmerk:hnswlib-core:1.1.0")
-
     // ==================== JSON Parsing ====================
     implementation("com.google.code.gson:gson:2.10.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
-
-    // ==================== Calendar & Tasks Integration ====================
-    // Android Calendar Provider - built into Android SDK
 
     // ==================== Coroutines ====================
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
