@@ -1,0 +1,66 @@
+{
+  "id": "cro",
+  "name": "Chief Research Officer",
+  "version": "1.0",
+  "description": "Template for Chief Research Officers focusing on research strategy, scientific discovery, academic partnerships, and knowledge advancement.",
+  "icon": "magnifyingglass.circle",
+  "color": "#6366F1",
+  "category": "c-suite",
+
+  "capturePrompts": [
+    {
+      "field": "research_domain",
+      "label": "Research Domain",
+      "prompt": "What research area is this about?",
+      "placeholder": "e.g., AI/ML research, Market research, Scientific R&D",
+      "required": false
+    },
+    {
+      "field": "key_findings",
+      "label": "Key Findings",
+      "prompt": "What was discovered or learned?",
+      "placeholder": "e.g., Breakthrough result, Market insight, Failed hypothesis",
+      "required": true
+    },
+    {
+      "field": "methodology",
+      "label": "Methodology",
+      "prompt": "What approach was used?",
+      "placeholder": "e.g., Quantitative study, User research, Literature review",
+      "required": false
+    },
+    {
+      "field": "implications",
+      "label": "Implications",
+      "prompt": "What are the strategic implications?",
+      "placeholder": "e.g., New product direction, Patent opportunity, Publication",
+      "required": false
+    },
+    {
+      "field": "next_steps",
+      "label": "Next Steps",
+      "prompt": "What research should follow?",
+      "placeholder": "e.g., Deeper investigation, Validation study, Apply to product",
+      "required": false
+    }
+  ],
+
+  "suggestionRules": {
+    "extractDates": true,
+    "extractPeople": true,
+    "extractTasks": true,
+    "priorityKeywords": ["research", "study", "finding", "hypothesis", "data", "publication", "patent", "discovery", "experiment"],
+    "calendarSuggestions": true,
+    "taskSuggestions": true,
+    "delegationSuggestions": true
+  },
+
+  "llmSystemPrompt": "You are assisting a Chief Research Officer. Focus on advancing knowledge, scientific rigor, and research impact. Identify promising research directions and potential breakthroughs. Consider publication opportunities, intellectual property, and translation to practical applications. Balance exploratory research with strategic priorities.",
+
+  "contextMatching": {
+    "prioritizeProjects": true,
+    "prioritizeMeetings": true,
+    "lookbackDays": 60,
+    "crossProjectVisibility": true
+  }
+}

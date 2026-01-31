@@ -1,0 +1,65 @@
+{
+  "id": "developer",
+  "name": "Developer",
+  "version": "1.0",
+  "description": "Template for developers focusing on technical specs, code references, bugs, and implementation details.",
+  "icon": "chevron.left.forwardslash.chevron.right",
+  "color": "#10B981",
+
+  "capturePrompts": [
+    {
+      "field": "technical_context",
+      "label": "Technical Context",
+      "prompt": "What's the technical background?",
+      "placeholder": "e.g., API endpoint, database schema, component name",
+      "required": false
+    },
+    {
+      "field": "implementation_notes",
+      "label": "Implementation Notes",
+      "prompt": "How should this be built?",
+      "placeholder": "e.g., Use async/await, Add caching layer",
+      "required": true
+    },
+    {
+      "field": "code_references",
+      "label": "Code References",
+      "prompt": "What files or functions are relevant?",
+      "placeholder": "e.g., src/api/users.ts, handleAuth()",
+      "required": false
+    },
+    {
+      "field": "bugs_issues",
+      "label": "Bugs & Issues",
+      "prompt": "What problems need fixing?",
+      "placeholder": "e.g., Memory leak in list view, Race condition",
+      "required": false
+    },
+    {
+      "field": "dependencies",
+      "label": "Dependencies",
+      "prompt": "What else is this blocked on or affects?",
+      "placeholder": "e.g., Needs auth service deployed first",
+      "required": false
+    }
+  ],
+
+  "suggestionRules": {
+    "extractDates": false,
+    "extractPeople": false,
+    "extractTasks": true,
+    "priorityKeywords": ["bug", "fix", "refactor", "implement", "test", "deploy", "error", "crash"],
+    "calendarSuggestions": false,
+    "taskSuggestions": true,
+    "codeBlockDetection": true
+  },
+
+  "llmSystemPrompt": "You are assisting a Developer. Focus on technical accuracy, implementation details, and code-related context. When suggesting next steps, prioritize technical tasks like implementing, testing, refactoring, or debugging. Avoid scheduling-focused suggestions unless explicitly mentioned.",
+
+  "contextMatching": {
+    "prioritizeProjects": true,
+    "prioritizeMeetings": false,
+    "lookbackDays": 30,
+    "matchCodeReferences": true
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "id": "marketing",
+  "name": "Marketing",
+  "version": "1.0",
+  "description": "Template for marketers focusing on campaigns, content, metrics, brand positioning, and audience insights.",
+  "icon": "megaphone",
+  "color": "#EC4899",
+  "category": "functional",
+
+  "capturePrompts": [
+    {
+      "field": "campaign_context",
+      "label": "Campaign Context",
+      "prompt": "What campaign or initiative is this about?",
+      "placeholder": "e.g., Q2 product launch, Brand awareness campaign",
+      "required": false
+    },
+    {
+      "field": "key_messages",
+      "label": "Key Messages",
+      "prompt": "What are the main messages or content ideas?",
+      "placeholder": "e.g., Value proposition, Tagline options, Content themes",
+      "required": true
+    },
+    {
+      "field": "target_audience",
+      "label": "Target Audience",
+      "prompt": "Who are we trying to reach?",
+      "placeholder": "e.g., Enterprise buyers, Gen Z consumers, SMB owners",
+      "required": false
+    },
+    {
+      "field": "metrics_kpis",
+      "label": "Metrics & KPIs",
+      "prompt": "What are we measuring?",
+      "placeholder": "e.g., CTR, Conversion rate, Brand awareness lift",
+      "required": false
+    },
+    {
+      "field": "channels",
+      "label": "Channels",
+      "prompt": "Which channels are involved?",
+      "placeholder": "e.g., Social media, Email, PPC, Events",
+      "required": false
+    }
+  ],
+
+  "suggestionRules": {
+    "extractDates": true,
+    "extractPeople": true,
+    "extractTasks": true,
+    "priorityKeywords": ["launch", "campaign", "deadline", "content", "publish", "approve", "creative", "brand"],
+    "calendarSuggestions": true,
+    "taskSuggestions": true
+  },
+
+  "llmSystemPrompt": "You are assisting a Marketing professional. Focus on campaign execution, content creation, and audience engagement. Identify creative opportunities and actionable next steps for campaigns. Consider brand consistency and measurable outcomes.",
+
+  "contextMatching": {
+    "prioritizeProjects": true,
+    "prioritizeMeetings": true,
+    "lookbackDays": 14
+  }
+}

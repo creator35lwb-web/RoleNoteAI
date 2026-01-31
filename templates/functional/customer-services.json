@@ -1,0 +1,65 @@
+{
+  "id": "customer-services",
+  "name": "Customer Services",
+  "version": "1.0",
+  "description": "Template for customer service representatives focusing on tickets, resolutions, customer feedback, and escalations.",
+  "icon": "headphones",
+  "color": "#14B8A6",
+  "category": "functional",
+
+  "capturePrompts": [
+    {
+      "field": "customer_issue",
+      "label": "Customer Issue",
+      "prompt": "What is the customer's problem or request?",
+      "placeholder": "e.g., Can't login, Billing dispute, Feature request",
+      "required": true
+    },
+    {
+      "field": "resolution_status",
+      "label": "Resolution Status",
+      "prompt": "What is the current status?",
+      "placeholder": "e.g., Resolved, Pending, Escalated to engineering",
+      "required": false
+    },
+    {
+      "field": "customer_sentiment",
+      "label": "Customer Sentiment",
+      "prompt": "How is the customer feeling?",
+      "placeholder": "e.g., Frustrated, Satisfied, Neutral",
+      "required": false
+    },
+    {
+      "field": "follow_up_needed",
+      "label": "Follow-up Needed",
+      "prompt": "What follow-up is required?",
+      "placeholder": "e.g., Check back in 24h, Send confirmation, Escalate to manager",
+      "required": false
+    },
+    {
+      "field": "ticket_reference",
+      "label": "Ticket Reference",
+      "prompt": "What is the ticket or case number?",
+      "placeholder": "e.g., TICKET-12345, Case #67890",
+      "required": false
+    }
+  ],
+
+  "suggestionRules": {
+    "extractDates": true,
+    "extractPeople": true,
+    "extractTasks": true,
+    "priorityKeywords": ["urgent", "escalate", "follow-up", "refund", "complaint", "resolved", "pending", "callback"],
+    "calendarSuggestions": true,
+    "taskSuggestions": true
+  },
+
+  "llmSystemPrompt": "You are assisting a Customer Service professional. Focus on issue resolution, customer satisfaction, and timely follow-ups. Identify escalation needs, track resolution status, and suggest proactive outreach. Prioritize empathy and clear communication.",
+
+  "contextMatching": {
+    "prioritizeProjects": false,
+    "prioritizeMeetings": false,
+    "lookbackDays": 7,
+    "matchCustomerCases": true
+  }
+}

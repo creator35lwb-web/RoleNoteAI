@@ -1,0 +1,67 @@
+{
+  "id": "cto",
+  "name": "Chief Technology Officer",
+  "version": "1.0",
+  "description": "Template for CTOs focusing on technology strategy, architecture decisions, engineering leadership, and innovation.",
+  "icon": "cpu",
+  "color": "#7C3AED",
+  "category": "c-suite",
+
+  "capturePrompts": [
+    {
+      "field": "technology_context",
+      "label": "Technology Context",
+      "prompt": "What technology area is this about?",
+      "placeholder": "e.g., Infrastructure, Platform architecture, AI/ML capabilities",
+      "required": false
+    },
+    {
+      "field": "strategic_impact",
+      "label": "Strategic Impact",
+      "prompt": "How does this affect our tech strategy?",
+      "placeholder": "e.g., Enables scaling, Reduces tech debt, New capability",
+      "required": false
+    },
+    {
+      "field": "architecture_decision",
+      "label": "Architecture Decision",
+      "prompt": "What architectural choices are involved?",
+      "placeholder": "e.g., Microservices vs monolith, Cloud provider, Build vs buy",
+      "required": true
+    },
+    {
+      "field": "team_impact",
+      "label": "Team Impact",
+      "prompt": "How does this affect engineering teams?",
+      "placeholder": "e.g., New skills needed, Team restructure, Hiring priority",
+      "required": false
+    },
+    {
+      "field": "risks_tradeoffs",
+      "label": "Risks & Trade-offs",
+      "prompt": "What are the technical risks and trade-offs?",
+      "placeholder": "e.g., Complexity increase, Vendor lock-in, Migration risk",
+      "required": false
+    }
+  ],
+
+  "suggestionRules": {
+    "extractDates": true,
+    "extractPeople": true,
+    "extractTasks": true,
+    "priorityKeywords": ["architecture", "security", "scale", "platform", "migration", "innovation", "debt", "roadmap"],
+    "calendarSuggestions": true,
+    "taskSuggestions": true,
+    "delegationSuggestions": true
+  },
+
+  "llmSystemPrompt": "You are assisting a Chief Technology Officer. Focus on technology strategy, architectural decisions, and engineering excellence. Identify technical risks, innovation opportunities, and team development needs. Balance short-term delivery with long-term technical vision. Consider security and scalability implications.",
+
+  "contextMatching": {
+    "prioritizeProjects": true,
+    "prioritizeMeetings": true,
+    "lookbackDays": 30,
+    "crossProjectVisibility": true,
+    "matchCodeReferences": true
+  }
+}

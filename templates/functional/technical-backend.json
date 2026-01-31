@@ -1,0 +1,66 @@
+{
+  "id": "technical-backend",
+  "name": "Technical - Backend",
+  "version": "1.0",
+  "description": "Template for backend developers focusing on APIs, databases, server infrastructure, and system architecture.",
+  "icon": "server.rack",
+  "color": "#0EA5E9",
+  "category": "functional",
+
+  "capturePrompts": [
+    {
+      "field": "system_context",
+      "label": "System Context",
+      "prompt": "What system or service is this about?",
+      "placeholder": "e.g., User auth service, Payment API, Database migration",
+      "required": false
+    },
+    {
+      "field": "technical_details",
+      "label": "Technical Details",
+      "prompt": "What are the technical specifics?",
+      "placeholder": "e.g., REST endpoint, SQL query, Redis cache strategy",
+      "required": true
+    },
+    {
+      "field": "code_references",
+      "label": "Code References",
+      "prompt": "What files, functions, or endpoints are relevant?",
+      "placeholder": "e.g., /api/v2/users, UserService.ts, migrations/001",
+      "required": false
+    },
+    {
+      "field": "performance_scaling",
+      "label": "Performance & Scaling",
+      "prompt": "Any performance or scaling considerations?",
+      "placeholder": "e.g., N+1 query issue, Need caching, Rate limiting required",
+      "required": false
+    },
+    {
+      "field": "dependencies",
+      "label": "Dependencies",
+      "prompt": "What does this depend on or block?",
+      "placeholder": "e.g., Needs DB schema first, Blocks frontend integration",
+      "required": false
+    }
+  ],
+
+  "suggestionRules": {
+    "extractDates": false,
+    "extractPeople": false,
+    "extractTasks": true,
+    "priorityKeywords": ["bug", "fix", "deploy", "migrate", "api", "database", "error", "performance", "security"],
+    "calendarSuggestions": false,
+    "taskSuggestions": true,
+    "codeBlockDetection": true
+  },
+
+  "llmSystemPrompt": "You are assisting a Backend Developer. Focus on server-side architecture, API design, database operations, and system reliability. Identify technical debt, performance issues, and implementation tasks. Be specific about code changes and system dependencies.",
+
+  "contextMatching": {
+    "prioritizeProjects": true,
+    "prioritizeMeetings": false,
+    "lookbackDays": 30,
+    "matchCodeReferences": true
+  }
+}

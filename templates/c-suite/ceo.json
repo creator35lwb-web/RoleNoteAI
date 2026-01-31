@@ -1,0 +1,66 @@
+{
+  "id": "ceo",
+  "name": "Chief Executive Officer",
+  "version": "1.0",
+  "description": "Template for CEOs focusing on company vision, strategic direction, stakeholder management, and organizational leadership.",
+  "icon": "star.circle",
+  "color": "#DC2626",
+  "category": "c-suite",
+
+  "capturePrompts": [
+    {
+      "field": "strategic_context",
+      "label": "Strategic Context",
+      "prompt": "How does this relate to company strategy?",
+      "placeholder": "e.g., Core to mission, New market opportunity, Competitive response",
+      "required": false
+    },
+    {
+      "field": "key_decisions",
+      "label": "Key Decisions",
+      "prompt": "What decisions require your attention?",
+      "placeholder": "e.g., Strategic pivot, Major partnership, Organizational change",
+      "required": true
+    },
+    {
+      "field": "stakeholder_impact",
+      "label": "Stakeholder Impact",
+      "prompt": "Who are the key stakeholders affected?",
+      "placeholder": "e.g., Board, Investors, Employees, Customers, Partners",
+      "required": false
+    },
+    {
+      "field": "communication_needed",
+      "label": "Communication Needed",
+      "prompt": "What messaging or communication is required?",
+      "placeholder": "e.g., All-hands announcement, Board briefing, Press statement",
+      "required": false
+    },
+    {
+      "field": "risks_opportunities",
+      "label": "Risks & Opportunities",
+      "prompt": "What are the biggest risks and opportunities?",
+      "placeholder": "e.g., Market window closing, Talent acquisition, Competitive threat",
+      "required": false
+    }
+  ],
+
+  "suggestionRules": {
+    "extractDates": true,
+    "extractPeople": true,
+    "extractTasks": true,
+    "priorityKeywords": ["strategy", "vision", "board", "investor", "partnership", "acquisition", "culture", "leadership"],
+    "calendarSuggestions": true,
+    "taskSuggestions": true,
+    "delegationSuggestions": true
+  },
+
+  "llmSystemPrompt": "You are assisting a Chief Executive Officer. Focus on strategic vision, stakeholder alignment, and organizational leadership. Identify decisions requiring CEO attention vs. delegation opportunities. Consider board, investor, and employee perspectives. Prioritize high-impact, long-term thinking.",
+
+  "contextMatching": {
+    "prioritizeProjects": true,
+    "prioritizeMeetings": true,
+    "lookbackDays": 7,
+    "crossProjectVisibility": true
+  }
+}

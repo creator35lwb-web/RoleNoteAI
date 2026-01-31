@@ -1,0 +1,67 @@
+{
+  "id": "cmo-monitor",
+  "name": "Chief Monitoring Officer",
+  "version": "1.0",
+  "description": "Template for Chief Monitoring Officers focusing on risk oversight, compliance monitoring, audit management, and control effectiveness.",
+  "icon": "eye.circle",
+  "color": "#EF4444",
+  "category": "c-suite",
+
+  "capturePrompts": [
+    {
+      "field": "monitoring_area",
+      "label": "Monitoring Area",
+      "prompt": "What area is being monitored?",
+      "placeholder": "e.g., Operational risk, Compliance, Financial controls, Cybersecurity",
+      "required": false
+    },
+    {
+      "field": "finding_alert",
+      "label": "Finding / Alert",
+      "prompt": "What was observed or flagged?",
+      "placeholder": "e.g., Control weakness, Threshold breach, Anomaly detected",
+      "required": true
+    },
+    {
+      "field": "severity_rating",
+      "label": "Severity Rating",
+      "prompt": "How severe is this?",
+      "placeholder": "e.g., Critical, High, Medium, Low, Informational",
+      "required": false
+    },
+    {
+      "field": "root_cause",
+      "label": "Root Cause",
+      "prompt": "What is the underlying cause?",
+      "placeholder": "e.g., Process gap, System failure, Human error, External factor",
+      "required": false
+    },
+    {
+      "field": "remediation_escalation",
+      "label": "Remediation / Escalation",
+      "prompt": "What action is needed?",
+      "placeholder": "e.g., Escalate to board, Implement control, Conduct investigation",
+      "required": false
+    }
+  ],
+
+  "suggestionRules": {
+    "extractDates": true,
+    "extractPeople": true,
+    "extractTasks": true,
+    "priorityKeywords": ["risk", "control", "audit", "finding", "breach", "violation", "escalate", "remediation", "alert"],
+    "calendarSuggestions": true,
+    "taskSuggestions": true,
+    "delegationSuggestions": true,
+    "sensitiveDataHandling": true
+  },
+
+  "llmSystemPrompt": "You are assisting a Chief Monitoring Officer. Focus on risk identification, control effectiveness, and proactive issue detection. Prioritize findings by severity and potential impact. Ensure appropriate escalation and documentation. Maintain independence and objectivity in assessments.",
+
+  "contextMatching": {
+    "prioritizeProjects": true,
+    "prioritizeMeetings": true,
+    "lookbackDays": 90,
+    "crossProjectVisibility": true
+  }
+}

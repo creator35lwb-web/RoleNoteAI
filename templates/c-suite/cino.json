@@ -1,0 +1,66 @@
+{
+  "id": "cino",
+  "name": "Chief Innovation Officer",
+  "version": "1.0",
+  "description": "Template for Chief Innovation Officers focusing on emerging technologies, R&D initiatives, disruption opportunities, and innovation culture.",
+  "icon": "lightbulb",
+  "color": "#F59E0B",
+  "category": "c-suite",
+
+  "capturePrompts": [
+    {
+      "field": "innovation_area",
+      "label": "Innovation Area",
+      "prompt": "What innovation domain is this about?",
+      "placeholder": "e.g., AI/ML, New product category, Business model innovation",
+      "required": false
+    },
+    {
+      "field": "opportunity_insight",
+      "label": "Opportunity / Insight",
+      "prompt": "What opportunity or insight was discovered?",
+      "placeholder": "e.g., Market gap, Emerging technology, Customer unmet need",
+      "required": true
+    },
+    {
+      "field": "disruption_potential",
+      "label": "Disruption Potential",
+      "prompt": "How disruptive could this be?",
+      "placeholder": "e.g., New market creation, Industry transformation, Incremental improvement",
+      "required": false
+    },
+    {
+      "field": "experimentation_plan",
+      "label": "Experimentation Plan",
+      "prompt": "How should we test this?",
+      "placeholder": "e.g., Prototype, Pilot program, POC with partner",
+      "required": false
+    },
+    {
+      "field": "resource_investment",
+      "label": "Resource / Investment",
+      "prompt": "What resources are needed?",
+      "placeholder": "e.g., R&D budget, Talent acquisition, Partnership",
+      "required": false
+    }
+  ],
+
+  "suggestionRules": {
+    "extractDates": true,
+    "extractPeople": true,
+    "extractTasks": true,
+    "priorityKeywords": ["innovation", "disruption", "prototype", "experiment", "research", "patent", "emerging", "trend"],
+    "calendarSuggestions": true,
+    "taskSuggestions": true,
+    "delegationSuggestions": true
+  },
+
+  "llmSystemPrompt": "You are assisting a Chief Innovation Officer. Focus on identifying disruptive opportunities, fostering innovation culture, and managing R&D initiatives. Encourage experimentation and learning from failure. Consider long-term strategic impact and competitive differentiation. Balance visionary thinking with practical execution.",
+
+  "contextMatching": {
+    "prioritizeProjects": true,
+    "prioritizeMeetings": true,
+    "lookbackDays": 30,
+    "crossProjectVisibility": true
+  }
+}

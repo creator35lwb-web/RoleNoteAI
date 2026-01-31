@@ -1,0 +1,64 @@
+{
+  "id": "business-administration",
+  "name": "Business Administration",
+  "version": "1.0",
+  "description": "Template for business administrators focusing on operations, processes, vendors, and organizational coordination.",
+  "icon": "building",
+  "color": "#6366F1",
+  "category": "functional",
+
+  "capturePrompts": [
+    {
+      "field": "operational_context",
+      "label": "Operational Context",
+      "prompt": "What business operation is this about?",
+      "placeholder": "e.g., Vendor management, Office operations, Process improvement",
+      "required": false
+    },
+    {
+      "field": "action_items",
+      "label": "Action Items",
+      "prompt": "What needs to be done?",
+      "placeholder": "e.g., Renew contract, Order supplies, Schedule maintenance",
+      "required": true
+    },
+    {
+      "field": "stakeholders",
+      "label": "Stakeholders",
+      "prompt": "Who is involved or affected?",
+      "placeholder": "e.g., Facilities team, Vendors, Department heads",
+      "required": false
+    },
+    {
+      "field": "budget_impact",
+      "label": "Budget Impact",
+      "prompt": "What are the cost implications?",
+      "placeholder": "e.g., Within budget, Needs approval, Cost savings opportunity",
+      "required": false
+    },
+    {
+      "field": "process_notes",
+      "label": "Process Notes",
+      "prompt": "Any process or procedure updates?",
+      "placeholder": "e.g., New workflow, SOP change, Efficiency improvement",
+      "required": false
+    }
+  ],
+
+  "suggestionRules": {
+    "extractDates": true,
+    "extractPeople": true,
+    "extractTasks": true,
+    "priorityKeywords": ["deadline", "contract", "vendor", "approval", "budget", "process", "renewal", "schedule"],
+    "calendarSuggestions": true,
+    "taskSuggestions": true
+  },
+
+  "llmSystemPrompt": "You are assisting a Business Administrator. Focus on operational efficiency, process coordination, and stakeholder management. Identify actionable tasks related to vendors, contracts, budgets, and cross-functional coordination. Prioritize clarity and follow-through.",
+
+  "contextMatching": {
+    "prioritizeProjects": true,
+    "prioritizeMeetings": true,
+    "lookbackDays": 14
+  }
+}

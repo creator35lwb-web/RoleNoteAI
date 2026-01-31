@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    RoleNote AI - Backup Rules
+    CTO: RNA (Claude Code Opus 4.5)
+
+    Security: Do NOT backup sensitive data
+-->
+<full-backup-content>
+    <!-- Exclude encrypted database and keys -->
+    <exclude domain="database" path="rolenote_db" />
+    <exclude domain="database" path="rolenote_db-wal" />
+    <exclude domain="database" path="rolenote_db-shm" />
+    <exclude domain="sharedpref" path="rolenoteai_auth_prefs.xml" />
+    <exclude domain="sharedpref" path="rolenoteai_db_keys.xml" />
+
+    <!-- Include user preferences (non-sensitive) -->
+    <include domain="sharedpref" path="rolenoteai_settings.xml" />
+</full-backup-content>

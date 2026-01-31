@@ -1,0 +1,65 @@
+{
+  "id": "compliance-feedback",
+  "name": "Compliance & Feedback",
+  "version": "1.0",
+  "description": "Template for compliance officers and feedback managers focusing on regulations, audits, policy adherence, and improvement initiatives.",
+  "icon": "checkmark.shield",
+  "color": "#EF4444",
+  "category": "functional",
+
+  "capturePrompts": [
+    {
+      "field": "compliance_area",
+      "label": "Compliance Area",
+      "prompt": "What regulation or policy is this about?",
+      "placeholder": "e.g., GDPR, SOX, Internal policy, Industry standard",
+      "required": false
+    },
+    {
+      "field": "finding_observation",
+      "label": "Finding / Observation",
+      "prompt": "What was observed or reported?",
+      "placeholder": "e.g., Gap identified, Non-compliance found, Feedback received",
+      "required": true
+    },
+    {
+      "field": "severity_priority",
+      "label": "Severity / Priority",
+      "prompt": "How critical is this?",
+      "placeholder": "e.g., Critical, High, Medium, Low, Informational",
+      "required": false
+    },
+    {
+      "field": "remediation_action",
+      "label": "Remediation Action",
+      "prompt": "What corrective action is needed?",
+      "placeholder": "e.g., Update policy, Train staff, Implement control, Fix process",
+      "required": false
+    },
+    {
+      "field": "deadline_owner",
+      "label": "Deadline & Owner",
+      "prompt": "Who is responsible and by when?",
+      "placeholder": "e.g., IT team by March 15, Legal review within 30 days",
+      "required": false
+    }
+  ],
+
+  "suggestionRules": {
+    "extractDates": true,
+    "extractPeople": true,
+    "extractTasks": true,
+    "priorityKeywords": ["audit", "finding", "violation", "deadline", "remediation", "risk", "control", "policy", "regulation"],
+    "calendarSuggestions": true,
+    "taskSuggestions": true,
+    "sensitiveDataHandling": true
+  },
+
+  "llmSystemPrompt": "You are assisting a Compliance and Feedback professional. Focus on regulatory adherence, risk mitigation, and continuous improvement. Identify compliance gaps, track remediation efforts, and suggest process improvements. Prioritize documentation and accountability.",
+
+  "contextMatching": {
+    "prioritizeProjects": true,
+    "prioritizeMeetings": true,
+    "lookbackDays": 90
+  }
+}

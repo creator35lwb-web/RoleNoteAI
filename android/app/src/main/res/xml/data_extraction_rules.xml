@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    RoleNote AI - Data Extraction Rules (Android 12+)
+    CTO: RNA (Claude Code Opus 4.5)
+
+    Security: Prevent extraction of sensitive data
+-->
+<data-extraction-rules>
+    <cloud-backup>
+        <!-- Exclude encrypted database and keys from cloud backup -->
+        <exclude domain="database" path="rolenote_db" />
+        <exclude domain="database" path="rolenote_db-wal" />
+        <exclude domain="database" path="rolenote_db-shm" />
+        <exclude domain="sharedpref" path="rolenoteai_auth_prefs.xml" />
+        <exclude domain="sharedpref" path="rolenoteai_db_keys.xml" />
+    </cloud-backup>
+    <device-transfer>
+        <!-- Allow device-to-device transfer of non-sensitive preferences -->
+        <include domain="sharedpref" path="rolenoteai_settings.xml" />
+    </device-transfer>
+</data-extraction-rules>

@@ -1,0 +1,63 @@
+{
+  "id": "project-manager",
+  "name": "Project Manager",
+  "version": "1.0",
+  "description": "Template for project managers focusing on deadlines, decisions, blockers, and action items.",
+  "icon": "folder.badge.person.crop",
+  "color": "#3B82F6",
+
+  "capturePrompts": [
+    {
+      "field": "key_decisions",
+      "label": "Key Decisions",
+      "prompt": "What decisions were made?",
+      "placeholder": "e.g., Approved the new timeline, Selected vendor X",
+      "required": false
+    },
+    {
+      "field": "action_items",
+      "label": "Action Items",
+      "prompt": "What are the next steps?",
+      "placeholder": "e.g., Send proposal by Friday, Schedule kickoff meeting",
+      "required": true
+    },
+    {
+      "field": "blockers",
+      "label": "Blockers",
+      "prompt": "What's preventing progress?",
+      "placeholder": "e.g., Waiting on legal review, Resource shortage",
+      "required": false
+    },
+    {
+      "field": "timeline_impact",
+      "label": "Timeline Impact",
+      "prompt": "How does this affect the schedule?",
+      "placeholder": "e.g., On track, 2-day delay expected",
+      "required": false
+    },
+    {
+      "field": "stakeholders",
+      "label": "Stakeholders",
+      "prompt": "Who needs to know?",
+      "placeholder": "e.g., Engineering lead, Executive sponsor",
+      "required": false
+    }
+  ],
+
+  "suggestionRules": {
+    "extractDates": true,
+    "extractPeople": true,
+    "extractTasks": true,
+    "priorityKeywords": ["deadline", "urgent", "blocker", "risk", "decision", "approval"],
+    "calendarSuggestions": true,
+    "taskSuggestions": true
+  },
+
+  "llmSystemPrompt": "You are assisting a Project Manager. Focus on identifying actionable items, deadlines, blockers, and stakeholder communications. Prioritize clarity and accountability. When suggesting next steps, be specific about who should do what and by when.",
+
+  "contextMatching": {
+    "prioritizeProjects": true,
+    "prioritizeMeetings": true,
+    "lookbackDays": 14
+  }
+}

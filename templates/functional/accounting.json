@@ -1,0 +1,64 @@
+{
+  "id": "accounting",
+  "name": "Accounting",
+  "version": "1.0",
+  "description": "Template for accountants focusing on financial records, transactions, compliance, and reporting deadlines.",
+  "icon": "dollarsign.circle",
+  "color": "#059669",
+  "category": "functional",
+
+  "capturePrompts": [
+    {
+      "field": "transaction_details",
+      "label": "Transaction Details",
+      "prompt": "What financial transactions occurred?",
+      "placeholder": "e.g., Invoice #1234, Payment received, Journal entry",
+      "required": false
+    },
+    {
+      "field": "account_impact",
+      "label": "Account Impact",
+      "prompt": "Which accounts are affected?",
+      "placeholder": "e.g., AR increased, Revenue recognized, Expense recorded",
+      "required": true
+    },
+    {
+      "field": "compliance_notes",
+      "label": "Compliance Notes",
+      "prompt": "Any compliance or audit considerations?",
+      "placeholder": "e.g., GAAP requirement, Tax implication, Audit trail needed",
+      "required": false
+    },
+    {
+      "field": "deadlines",
+      "label": "Deadlines",
+      "prompt": "What are the reporting deadlines?",
+      "placeholder": "e.g., Month-end close, Quarterly filing, Tax due date",
+      "required": false
+    },
+    {
+      "field": "reconciliation",
+      "label": "Reconciliation Items",
+      "prompt": "What needs to be reconciled?",
+      "placeholder": "e.g., Bank statement variance, Intercompany balance",
+      "required": false
+    }
+  ],
+
+  "suggestionRules": {
+    "extractDates": true,
+    "extractPeople": false,
+    "extractTasks": true,
+    "priorityKeywords": ["deadline", "due", "reconcile", "audit", "tax", "close", "filing", "variance"],
+    "calendarSuggestions": true,
+    "taskSuggestions": true
+  },
+
+  "llmSystemPrompt": "You are assisting an Accountant. Focus on financial accuracy, compliance requirements, and reporting deadlines. Identify action items related to reconciliations, journal entries, and regulatory filings. Be precise with numbers and dates.",
+
+  "contextMatching": {
+    "prioritizeProjects": true,
+    "prioritizeMeetings": false,
+    "lookbackDays": 30
+  }
+}

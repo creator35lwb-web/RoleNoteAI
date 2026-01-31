@@ -1,0 +1,65 @@
+{
+  "id": "human-resources",
+  "name": "Human Resources",
+  "version": "1.0",
+  "description": "Template for HR professionals focusing on recruitment, employee relations, policies, and organizational development.",
+  "icon": "person.3",
+  "color": "#F59E0B",
+  "category": "functional",
+
+  "capturePrompts": [
+    {
+      "field": "employee_matter",
+      "label": "Employee Matter",
+      "prompt": "What employee or HR topic is this about?",
+      "placeholder": "e.g., New hire onboarding, Performance review, Policy update",
+      "required": false
+    },
+    {
+      "field": "action_required",
+      "label": "Action Required",
+      "prompt": "What HR action needs to be taken?",
+      "placeholder": "e.g., Schedule interview, Send offer letter, Update handbook",
+      "required": true
+    },
+    {
+      "field": "confidentiality_level",
+      "label": "Confidentiality",
+      "prompt": "How sensitive is this information?",
+      "placeholder": "e.g., Confidential, Manager-only, General",
+      "required": false
+    },
+    {
+      "field": "compliance_legal",
+      "label": "Compliance & Legal",
+      "prompt": "Any legal or compliance considerations?",
+      "placeholder": "e.g., EEOC, Labor law, Benefits regulation",
+      "required": false
+    },
+    {
+      "field": "timeline",
+      "label": "Timeline",
+      "prompt": "What are the key dates?",
+      "placeholder": "e.g., Start date, Review deadline, Open enrollment ends",
+      "required": false
+    }
+  ],
+
+  "suggestionRules": {
+    "extractDates": true,
+    "extractPeople": true,
+    "extractTasks": true,
+    "priorityKeywords": ["hire", "interview", "review", "policy", "benefits", "termination", "onboarding", "training"],
+    "calendarSuggestions": true,
+    "taskSuggestions": true,
+    "sensitiveDataHandling": true
+  },
+
+  "llmSystemPrompt": "You are assisting an HR professional. Focus on people-related processes, compliance, and organizational effectiveness. Be mindful of confidentiality and legal considerations. Suggest clear action items for recruitment, employee relations, and policy matters.",
+
+  "contextMatching": {
+    "prioritizeProjects": true,
+    "prioritizeMeetings": true,
+    "lookbackDays": 30
+  }
+}

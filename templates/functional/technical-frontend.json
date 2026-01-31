@@ -1,0 +1,66 @@
+{
+  "id": "technical-frontend",
+  "name": "Technical - Frontend",
+  "version": "1.0",
+  "description": "Template for frontend developers focusing on UI/UX implementation, components, state management, and user interactions.",
+  "icon": "rectangle.on.rectangle",
+  "color": "#8B5CF6",
+  "category": "functional",
+
+  "capturePrompts": [
+    {
+      "field": "ui_context",
+      "label": "UI Context",
+      "prompt": "What screen, component, or feature is this about?",
+      "placeholder": "e.g., Login form, Dashboard widget, Navigation menu",
+      "required": false
+    },
+    {
+      "field": "implementation_notes",
+      "label": "Implementation Notes",
+      "prompt": "How should this be built?",
+      "placeholder": "e.g., Use React hooks, Add animation, Handle loading state",
+      "required": true
+    },
+    {
+      "field": "component_references",
+      "label": "Component References",
+      "prompt": "What components or files are involved?",
+      "placeholder": "e.g., src/components/Button.tsx, useAuth hook",
+      "required": false
+    },
+    {
+      "field": "design_specs",
+      "label": "Design Specs",
+      "prompt": "Any design requirements or constraints?",
+      "placeholder": "e.g., Match Figma mockup, Responsive breakpoints, Accessibility",
+      "required": false
+    },
+    {
+      "field": "api_integration",
+      "label": "API Integration",
+      "prompt": "What backend APIs does this use?",
+      "placeholder": "e.g., GET /users, WebSocket connection, GraphQL query",
+      "required": false
+    }
+  ],
+
+  "suggestionRules": {
+    "extractDates": false,
+    "extractPeople": false,
+    "extractTasks": true,
+    "priorityKeywords": ["bug", "fix", "component", "style", "responsive", "accessibility", "state", "render"],
+    "calendarSuggestions": false,
+    "taskSuggestions": true,
+    "codeBlockDetection": true
+  },
+
+  "llmSystemPrompt": "You are assisting a Frontend Developer. Focus on UI implementation, component architecture, state management, and user experience. Identify visual bugs, accessibility issues, and implementation tasks. Consider responsive design and performance optimization.",
+
+  "contextMatching": {
+    "prioritizeProjects": true,
+    "prioritizeMeetings": false,
+    "lookbackDays": 30,
+    "matchCodeReferences": true
+  }
+}

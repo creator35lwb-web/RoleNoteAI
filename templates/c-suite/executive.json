@@ -1,0 +1,65 @@
+{
+  "id": "executive",
+  "name": "Executive",
+  "version": "1.0",
+  "description": "Template for executives focusing on strategic alignment, high-level decisions, and cross-functional visibility.",
+  "icon": "building.2",
+  "color": "#8B5CF6",
+
+  "capturePrompts": [
+    {
+      "field": "strategic_context",
+      "label": "Strategic Context",
+      "prompt": "How does this align with company goals?",
+      "placeholder": "e.g., Supports Q2 growth target, Part of cost reduction initiative",
+      "required": false
+    },
+    {
+      "field": "key_takeaways",
+      "label": "Key Takeaways",
+      "prompt": "What are the main points?",
+      "placeholder": "e.g., Revenue up 15%, New partnership opportunity",
+      "required": true
+    },
+    {
+      "field": "decisions_needed",
+      "label": "Decisions Needed",
+      "prompt": "What requires your decision?",
+      "placeholder": "e.g., Approve budget increase, Choose between options A/B",
+      "required": false
+    },
+    {
+      "field": "risks_opportunities",
+      "label": "Risks & Opportunities",
+      "prompt": "What should be on your radar?",
+      "placeholder": "e.g., Competitor launch imminent, Market expansion potential",
+      "required": false
+    },
+    {
+      "field": "follow_ups",
+      "label": "Follow-ups",
+      "prompt": "What needs your attention next?",
+      "placeholder": "e.g., Review proposal, Meet with team lead",
+      "required": false
+    }
+  ],
+
+  "suggestionRules": {
+    "extractDates": true,
+    "extractPeople": true,
+    "extractTasks": true,
+    "priorityKeywords": ["decision", "approve", "strategy", "risk", "opportunity", "budget", "board", "investor"],
+    "calendarSuggestions": true,
+    "taskSuggestions": true,
+    "delegationSuggestions": true
+  },
+
+  "llmSystemPrompt": "You are assisting an Executive. Focus on strategic implications, high-level decisions, and cross-functional impact. Summarize information concisely. When suggesting next steps, consider delegation opportunities and prioritize items requiring executive attention. Avoid getting into implementation details.",
+
+  "contextMatching": {
+    "prioritizeProjects": true,
+    "prioritizeMeetings": true,
+    "lookbackDays": 7,
+    "crossProjectVisibility": true
+  }
+}

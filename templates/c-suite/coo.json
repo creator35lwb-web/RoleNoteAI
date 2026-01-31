@@ -1,0 +1,66 @@
+{
+  "id": "coo",
+  "name": "Chief Operations Officer",
+  "version": "1.0",
+  "description": "Template for COOs focusing on operational excellence, cross-functional coordination, efficiency, and execution.",
+  "icon": "gearshape.2",
+  "color": "#0891B2",
+  "category": "c-suite",
+
+  "capturePrompts": [
+    {
+      "field": "operational_status",
+      "label": "Operational Status",
+      "prompt": "What is the current operational state?",
+      "placeholder": "e.g., On track, Bottleneck identified, Scaling challenge",
+      "required": false
+    },
+    {
+      "field": "key_metrics",
+      "label": "Key Metrics",
+      "prompt": "What are the relevant KPIs?",
+      "placeholder": "e.g., Throughput up 15%, SLA at 99.2%, Cost per unit",
+      "required": false
+    },
+    {
+      "field": "cross_functional_impact",
+      "label": "Cross-Functional Impact",
+      "prompt": "Which departments are affected?",
+      "placeholder": "e.g., Engineering + Support, Sales + Fulfillment",
+      "required": false
+    },
+    {
+      "field": "decisions_needed",
+      "label": "Decisions Needed",
+      "prompt": "What requires your decision?",
+      "placeholder": "e.g., Approve vendor, Prioritize initiative, Resource allocation",
+      "required": true
+    },
+    {
+      "field": "execution_risks",
+      "label": "Execution Risks",
+      "prompt": "What could derail execution?",
+      "placeholder": "e.g., Resource constraint, Dependencies, Timeline pressure",
+      "required": false
+    }
+  ],
+
+  "suggestionRules": {
+    "extractDates": true,
+    "extractPeople": true,
+    "extractTasks": true,
+    "priorityKeywords": ["bottleneck", "efficiency", "scale", "process", "SLA", "vendor", "capacity", "execution"],
+    "calendarSuggestions": true,
+    "taskSuggestions": true,
+    "delegationSuggestions": true
+  },
+
+  "llmSystemPrompt": "You are assisting a Chief Operations Officer. Focus on operational excellence, cross-functional coordination, and execution effectiveness. Identify bottlenecks, resource constraints, and process improvements. Suggest delegation opportunities and escalation points. Prioritize measurable outcomes.",
+
+  "contextMatching": {
+    "prioritizeProjects": true,
+    "prioritizeMeetings": true,
+    "lookbackDays": 14,
+    "crossProjectVisibility": true
+  }
+}

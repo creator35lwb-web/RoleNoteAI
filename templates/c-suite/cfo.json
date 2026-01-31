@@ -1,0 +1,66 @@
+{
+  "id": "cfo",
+  "name": "Chief Financial Officer",
+  "version": "1.0",
+  "description": "Template for CFOs focusing on financial strategy, capital allocation, investor relations, and fiscal governance.",
+  "icon": "banknote",
+  "color": "#059669",
+  "category": "c-suite",
+
+  "capturePrompts": [
+    {
+      "field": "financial_context",
+      "label": "Financial Context",
+      "prompt": "What financial topic is this about?",
+      "placeholder": "e.g., Quarterly results, Funding round, Budget planning",
+      "required": false
+    },
+    {
+      "field": "key_numbers",
+      "label": "Key Numbers",
+      "prompt": "What are the critical figures?",
+      "placeholder": "e.g., Revenue: $10M, Burn rate: $500K/mo, Runway: 18 months",
+      "required": false
+    },
+    {
+      "field": "capital_decisions",
+      "label": "Capital Decisions",
+      "prompt": "What capital allocation decisions are needed?",
+      "placeholder": "e.g., Approve investment, Cut costs, Raise capital",
+      "required": true
+    },
+    {
+      "field": "investor_board",
+      "label": "Investor / Board",
+      "prompt": "Any investor or board considerations?",
+      "placeholder": "e.g., Board presentation, Investor update, Due diligence",
+      "required": false
+    },
+    {
+      "field": "risk_exposure",
+      "label": "Risk Exposure",
+      "prompt": "What financial risks are present?",
+      "placeholder": "e.g., Currency risk, Cash flow timing, Concentration risk",
+      "required": false
+    }
+  ],
+
+  "suggestionRules": {
+    "extractDates": true,
+    "extractPeople": true,
+    "extractTasks": true,
+    "priorityKeywords": ["budget", "forecast", "revenue", "cost", "investor", "board", "audit", "compliance", "capital"],
+    "calendarSuggestions": true,
+    "taskSuggestions": true,
+    "delegationSuggestions": true
+  },
+
+  "llmSystemPrompt": "You are assisting a Chief Financial Officer. Focus on financial strategy, capital efficiency, and fiscal governance. Identify budget implications, investment opportunities, and financial risks. Consider investor relations and board reporting requirements. Prioritize data-driven decision making.",
+
+  "contextMatching": {
+    "prioritizeProjects": true,
+    "prioritizeMeetings": true,
+    "lookbackDays": 30,
+    "crossProjectVisibility": true
+  }
+}

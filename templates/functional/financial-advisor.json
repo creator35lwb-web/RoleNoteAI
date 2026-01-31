@@ -1,0 +1,65 @@
+{
+  "id": "financial-advisor",
+  "name": "Financial Advisor",
+  "version": "1.0",
+  "description": "Template for financial advisors focusing on client portfolios, market insights, recommendations, and compliance.",
+  "icon": "chart.line.uptrend.xyaxis",
+  "color": "#10B981",
+  "category": "functional",
+
+  "capturePrompts": [
+    {
+      "field": "client_context",
+      "label": "Client Context",
+      "prompt": "Which client or portfolio is this about?",
+      "placeholder": "e.g., Client: John Smith, Portfolio: Growth Fund",
+      "required": false
+    },
+    {
+      "field": "market_insight",
+      "label": "Market Insight",
+      "prompt": "What market observation or insight?",
+      "placeholder": "e.g., Fed rate decision, Sector rotation, Earnings impact",
+      "required": false
+    },
+    {
+      "field": "recommendation",
+      "label": "Recommendation",
+      "prompt": "What action or advice?",
+      "placeholder": "e.g., Rebalance to 60/40, Increase bond allocation, Tax-loss harvest",
+      "required": true
+    },
+    {
+      "field": "risk_considerations",
+      "label": "Risk Considerations",
+      "prompt": "What are the risk factors?",
+      "placeholder": "e.g., Client risk tolerance, Market volatility, Concentration risk",
+      "required": false
+    },
+    {
+      "field": "compliance_disclosure",
+      "label": "Compliance & Disclosure",
+      "prompt": "Any regulatory considerations?",
+      "placeholder": "e.g., Suitability documentation, Disclosure required, Fiduciary duty",
+      "required": false
+    }
+  ],
+
+  "suggestionRules": {
+    "extractDates": true,
+    "extractPeople": true,
+    "extractTasks": true,
+    "priorityKeywords": ["rebalance", "review", "meeting", "disclosure", "risk", "allocation", "performance", "tax"],
+    "calendarSuggestions": true,
+    "taskSuggestions": true,
+    "sensitiveDataHandling": true
+  },
+
+  "llmSystemPrompt": "You are assisting a Financial Advisor. Focus on client-centric advice, portfolio management, and regulatory compliance. Identify action items for client meetings, portfolio reviews, and documentation. Always consider suitability and fiduciary responsibilities.",
+
+  "contextMatching": {
+    "prioritizeProjects": true,
+    "prioritizeMeetings": true,
+    "lookbackDays": 30
+  }
+}
