@@ -198,7 +198,11 @@ cd RoleNoteAI
 
 ---
 
-## Roadmap
+## Roadmap v2.0
+
+> **Core-First Strategy:** Solid core before expanded features. Layer 1 must be rock solid before adding Layers 2-4.
+
+### Layer 1: Core (MVP)
 
 | Phase | Status | Description |
 |-------|--------|-------------|
@@ -206,10 +210,26 @@ cd RoleNoteAI
 | 2. Specs | ✅ Complete | Security, ethics, templates |
 | 3a. Android Setup | ✅ Complete | Project, security layer, database |
 | 3b. Core Engine | 🔄 Current | Template engine, CRUD, signifiers |
-| 3c. AI Integration | ⏳ Pending | Gemma 3, embeddings, suggestions |
-| 3d. Android Release | ⏳ Pending | Testing, Play Store |
-| 4. iOS | ⏳ After Android | SwiftUI port |
-| 5. Cross-Platform | ⏳ Future | Cloud sync, marketplace |
+| 3c. Role Intelligence | ⏳ Next | Role switching, template-specific UI |
+| 3d. AI Chat (Built-in) | ⏳ Pending | Gemma 3, input/draft/create modes |
+| 3e. Execution Framework | ⏳ Pending | BuJo migration, progress tracking |
+| 3f. Android MVP Release | ⏳ Pending | Testing, Play Store |
+
+### Layer 2: Integration (After MVP Success)
+
+| Phase | Status | Description |
+|-------|--------|-------------|
+| 4a. Voice Input | ⏳ Future | Voice capture & transcription |
+| 4b. External Templates | ⏳ Future | Import from Excel, work records |
+| 4c. Calendar Integration | ⏳ Future | Sync with device calendar |
+| 4d. External Chat | ⏳ Future | Telegram bot integration |
+
+### Layer 3: Platform Expansion
+
+| Phase | Status | Description |
+|-------|--------|-------------|
+| 5. iOS | ⏳ After Android | SwiftUI port |
+| 6. Cross-Platform | ⏳ Future | Cloud sync, marketplace |
 
 ---
 
@@ -229,13 +249,30 @@ This project uses GitHub as a **communication bridge for LLMs**. Future AI agent
 >
 > Phase 3a is complete. Security layer is solid. Next priority is:
 > - Role Template Engine integration
-> - Load 16 templates from JSON files
+> - Load 19 templates from JSON files
 > - Note CRUD operations
 > - Signifier parsing and display
 >
 > **Test on:** Redmi Pad SE 8.7
 >
 > — RNA (Claude Code Opus 4.5), January 31, 2026
+
+### Current CSO Notes (R)
+
+> **Focus:** Strategic Alignment & Market Validation
+>
+> Market research complete. Key findings:
+> - $11B+ market with 21% CAGR - VALIDATED
+> - Role-based intelligence is core differentiator
+> - Privacy-first (on-device AI) is competitive moat
+> - Core-first strategy: Layer 1 must be solid before Layer 2-4
+>
+> **Strategic Documents:**
+> - [CSO Strategic Vision v1.0](docs/CSO_STRATEGIC_VISION_v1.0.md)
+> - [CSO Alignment Guide v1.0](docs/CSO_ALIGNMENT_GUIDE_v1.0.md)
+> - [Market Research Report](docs/market-research/)
+>
+> — CSO R (Manus AI), February 01, 2026
 
 ---
 
@@ -262,7 +299,8 @@ MIT License - See [LICENSE](LICENSE)
 | Role | Entity |
 |------|--------|
 | **CTO** | RNA (Claude Code Opus 4.5) |
-| **Concept** | Manus AI |
+| **CSO** | R (Manus AI) |
+| **Founder** | Alton Lee Wei Bin |
 | **Validation** | VerifiMind-PEAS Trinity |
 | **Methodology** | Bullet Journal (Ryder Carroll) |
 
