@@ -27,11 +27,13 @@ import com.rolenoteai.app.domain.model.*
 import com.rolenoteai.app.presentation.viewmodel.AuthViewModel
 import com.rolenoteai.app.presentation.viewmodel.NoteViewModel
 import com.rolenoteai.app.presentation.viewmodel.TemplateViewModel
+import com.rolenoteai.app.presentation.viewmodel.TemplateUiState
 
 /**
  * RoleNote AI - Screen Composables
  * CTO: RNA (Claude Code Opus 4.5)
- * Phase 3b: Core Engine - Connected to ViewModels
+ * CSO: R (Manus AI)
+ * Phase 3c: Role Intelligence - Role Switching & Template UI
  */
 
 // ==================== Auth Screen ====================
@@ -400,18 +402,53 @@ fun OverviewScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Column {
-                        Text("Today")
-                        activeTemplate?.let {
-                            Text(
-                                text = it.name,
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        // Role color indicator
+                        activeTemplate?.let { template ->
+                            Box(
+                                modifier = Modifier
+                                    .size(12.dp)
+                                    .clip(CircleShape)
+                                    .background(parseColor(template.color))
                             )
+                            Spacer(modifier = Modifier.width(8.dp))
+                        }
+                        Column {
+                            Text("Today")
+                            activeTemplate?.let {
+                                Text(
+                                    text = it.name,
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
                         }
                     }
                 },
                 actions = {
+                    // Role badge in actions
+                    activeTemplate?.let { template ->
+                        AssistChip(
+                            onClick = { /* TODO: Quick role switch */ },
+                            label = {
+                                Text(
+                                    text = template.name.take(2).uppercase(),
+                                    style = MaterialTheme.typography.labelSmall
+                                )
+                            },
+                            leadingIcon = {
+                                Box(
+                                    modifier = Modifier
+                                        .size(8.dp)
+                                        .clip(CircleShape)
+                                        .background(parseColor(template.color))
+                                )
+                            },
+                            modifier = Modifier.padding(end = 4.dp)
+                        )
+                    }
                     IconButton(onClick = { /* TODO: Filter/search */ }) {
                         Icon(Icons.Default.Search, contentDescription = "Search")
                     }
@@ -598,9 +635,11 @@ fun NoteListItem(
 @Composable
 fun NotesScreen(
     onNoteClick: (String) -> Unit,
-    viewModel: NoteViewModel = hiltViewModel()
+    viewModel: NoteViewModel = hiltViewModel(),
+    templateViewModel: TemplateViewModel = hiltViewModel()
 ) {
     val notes by viewModel.allNotes.collectAsState()
+    val activeTemplate by templateViewModel.activeTemplate.collectAsState()
     var selectedSignifier by remember { mutableStateOf<Signifier?>(null) }
 
     val filteredNotes = remember(notes, selectedSignifier) {
@@ -611,7 +650,20 @@ fun NotesScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("All Notes") },
+                title = {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        activeTemplate?.let { template ->
+                            Box(
+                                modifier = Modifier
+                                    .size(10.dp)
+                                    .clip(CircleShape)
+                                    .background(parseColor(template.color))
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                        }
+                        Text("All Notes")
+                    }
+                },
                 actions = {
                     IconButton(onClick = { /* TODO: Search */ }) {
                         Icon(Icons.Default.Search, contentDescription = "Search")
@@ -690,7 +742,18 @@ fun CaptureScreen(
     var noteContent by remember { mutableStateOf("") }
     var selectedSignifier by remember { mutableStateOf<Signifier?>(null) }
     val uiState by viewModel.uiState.collectAsState()
+    val templateUiState by templateViewModel.uiState.collectAsState()
     val activeTemplate by templateViewModel.activeTemplate.collectAsState()
+
+    // Capture prompt answers (field -> value)
+    var promptAnswers by remember { mutableStateOf<Map<String, String>>(emptyMap()) }
+
+    // Load full template config when template is available
+    LaunchedEffect(activeTemplate?.id) {
+        activeTemplate?.id?.let { templateId ->
+            templateViewModel.loadFullTemplateConfig(templateId)
+        }
+    }
 
     LaunchedEffect(uiState.lastCreatedNote) {
         if (uiState.lastCreatedNote != null) {
@@ -698,10 +761,45 @@ fun CaptureScreen(
         }
     }
 
+    val templateConfig = templateUiState.currentTemplateConfig
+    val roleColor = activeTemplate?.color?.let { parseColor(it) } ?: MaterialTheme.colorScheme.primary
+
+    // Role-specific placeholder text
+    val placeholderText = when (activeTemplate?.id) {
+        "project-manager" -> "What needs to be done for the project?"
+        "developer" -> "Bug fix, feature, or code note..."
+        "ceo", "executive" -> "Strategic decision or insight..."
+        "cto" -> "Technical direction or architecture note..."
+        "cfo" -> "Financial consideration or budget note..."
+        "marketing" -> "Campaign idea or market insight..."
+        "human-resources" -> "Team update or HR action..."
+        else -> "Start typing your note..."
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("New Note") },
+                title = {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Box(
+                            modifier = Modifier
+                                .size(10.dp)
+                                .clip(CircleShape)
+                                .background(roleColor)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Column {
+                            Text("New Note")
+                            activeTemplate?.let {
+                                Text(
+                                    text = it.name,
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
+                    }
+                },
                 navigationIcon = {
                     IconButton(onClick = onNoteSaved) {
                         Icon(Icons.Default.Close, contentDescription = "Close")
@@ -710,13 +808,25 @@ fun CaptureScreen(
                 actions = {
                     TextButton(
                         onClick = {
-                            val content = if (selectedSignifier != null) {
+                            // Build content with signifier and prompt answers
+                            val baseContent = if (selectedSignifier != null) {
                                 "${selectedSignifier!!.symbol} $noteContent"
                             } else {
                                 noteContent
                             }
+
+                            // Append prompt answers as metadata
+                            val fullContent = if (promptAnswers.isNotEmpty()) {
+                                val metadata = promptAnswers.entries
+                                    .filter { it.value.isNotBlank() }
+                                    .joinToString(" | ") { "${it.key}: ${it.value}" }
+                                if (metadata.isNotEmpty()) "$baseContent\n[$metadata]" else baseContent
+                            } else {
+                                baseContent
+                            }
+
                             viewModel.createNote(
-                                rawInput = content,
+                                rawInput = fullContent,
                                 roleTemplateId = activeTemplate?.id,
                                 roleTemplateName = activeTemplate?.name
                             )
@@ -742,7 +852,7 @@ fun CaptureScreen(
                 .padding(padding)
                 .padding(16.dp)
         ) {
-            // Signifier selection
+            // Signifier selection with role color highlight
             Text(
                 text = "Type",
                 style = MaterialTheme.typography.labelMedium,
@@ -767,14 +877,14 @@ fun CaptureScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Note content
+            // Note content with role-specific placeholder
             OutlinedTextField(
                 value = noteContent,
                 onValueChange = { noteContent = it },
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                placeholder = { Text("Start typing your note...") },
+                placeholder = { Text(placeholderText) },
                 supportingText = {
                     if (uiState.error != null) {
                         Text(
@@ -784,6 +894,40 @@ fun CaptureScreen(
                     }
                 }
             )
+
+            // Template-specific capture prompts (optional fields)
+            templateConfig?.capturePrompts?.takeIf { it.isNotEmpty() }?.let { prompts ->
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Text(
+                    text = "Quick Fields (Optional)",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = roleColor
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                prompts.forEach { prompt ->
+                    OutlinedTextField(
+                        value = promptAnswers[prompt.field] ?: "",
+                        onValueChange = { value ->
+                            promptAnswers = promptAnswers + (prompt.field to value)
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp),
+                        placeholder = { Text(prompt.prompt) },
+                        label = { Text(prompt.field.replaceFirstChar { it.uppercase() }) },
+                        singleLine = true,
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = roleColor,
+                            focusedLabelColor = roleColor
+                        )
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+            }
 
             // Active template indicator
             activeTemplate?.let { template ->
@@ -858,6 +1002,141 @@ fun ChatScreen() {
     }
 }
 
+// ==================== Role Picker Dialog ====================
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun RolePickerDialog(
+    currentRole: com.rolenoteai.app.domain.model.RoleTemplate?,
+    templates: List<com.rolenoteai.app.domain.model.RoleTemplate>,
+    onRoleSelected: (String) -> Unit,
+    onDismiss: () -> Unit
+) {
+    val functionalTemplates = templates.filter { it.category == com.rolenoteai.app.domain.model.TemplateCategory.FUNCTIONAL }
+    val cSuiteTemplates = templates.filter { it.category == com.rolenoteai.app.domain.model.TemplateCategory.C_SUITE }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                text = "Switch Role",
+                style = MaterialTheme.typography.headlineSmall
+            )
+        },
+        text = {
+            LazyColumn(
+                modifier = Modifier.heightIn(max = 400.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                if (functionalTemplates.isNotEmpty()) {
+                    item {
+                        Text(
+                            text = "Functional Roles",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.padding(vertical = 8.dp)
+                        )
+                    }
+                    items(functionalTemplates) { template ->
+                        RolePickerItem(
+                            template = template,
+                            isSelected = template.id == currentRole?.id,
+                            onClick = { onRoleSelected(template.id) }
+                        )
+                    }
+                }
+
+                if (cSuiteTemplates.isNotEmpty()) {
+                    item {
+                        Text(
+                            text = "C-Suite Roles",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
+                        )
+                    }
+                    items(cSuiteTemplates) { template ->
+                        RolePickerItem(
+                            template = template,
+                            isSelected = template.id == currentRole?.id,
+                            onClick = { onRoleSelected(template.id) }
+                        )
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Cancel")
+            }
+        }
+    )
+}
+
+@Composable
+private fun RolePickerItem(
+    template: com.rolenoteai.app.domain.model.RoleTemplate,
+    isSelected: Boolean,
+    onClick: () -> Unit
+) {
+    val backgroundColor = if (isSelected) {
+        MaterialTheme.colorScheme.primaryContainer
+    } else {
+        MaterialTheme.colorScheme.surface
+    }
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() },
+        colors = CardDefaults.cardColors(containerColor = backgroundColor)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(36.dp)
+                    .clip(CircleShape)
+                    .background(parseColor(template.color)),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = template.name.first().toString(),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = Color.White
+                )
+            }
+            Spacer(modifier = Modifier.width(12.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = template.name,
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                template.description?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+            }
+            if (isSelected) {
+                Icon(
+                    imageVector = Icons.Default.CheckCircle,
+                    contentDescription = "Selected",
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+        }
+    }
+}
+
 // ==================== Settings Screen ====================
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -867,6 +1146,21 @@ fun SettingsScreen(
     templateViewModel: TemplateViewModel = hiltViewModel()
 ) {
     val activeTemplate by templateViewModel.activeTemplate.collectAsState()
+    val allTemplates by templateViewModel.allTemplates.collectAsState()
+    var showRolePicker by remember { mutableStateOf(false) }
+
+    // Role Picker Dialog
+    if (showRolePicker) {
+        RolePickerDialog(
+            currentRole = activeTemplate,
+            templates = allTemplates,
+            onRoleSelected = { templateId ->
+                templateViewModel.setActiveTemplate(templateId)
+                showRolePicker = false
+            },
+            onDismiss = { showRolePicker = false }
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -891,24 +1185,61 @@ fun SettingsScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             activeTemplate?.let { template ->
-                ListItem(
-                    headlineContent = { Text(template.name) },
-                    supportingContent = { Text(template.description ?: "") },
-                    leadingContent = {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { showRolePicker = true },
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant
+                    )
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         Box(
                             modifier = Modifier
-                                .size(40.dp)
+                                .size(48.dp)
                                 .clip(CircleShape)
                                 .background(parseColor(template.color)),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
                                 text = template.name.first().toString(),
+                                style = MaterialTheme.typography.titleLarge,
                                 color = Color.White
                             )
                         }
+                        Spacer(modifier = Modifier.width(16.dp))
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = template.name,
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                            Text(
+                                text = template.description ?: "Tap to change role",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                        Icon(
+                            imageVector = Icons.Default.SwapHoriz,
+                            contentDescription = "Change Role",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
                     }
-                )
+                }
+            } ?: run {
+                OutlinedButton(
+                    onClick = { showRolePicker = true },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = null)
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Select a Role")
+                }
             }
 
             Divider(modifier = Modifier.padding(vertical = 16.dp))
@@ -945,7 +1276,7 @@ fun SettingsScreen(
 
             ListItem(
                 headlineContent = { Text("Version") },
-                supportingContent = { Text("1.0.0-alpha (Phase 3b)") },
+                supportingContent = { Text("1.0.0-alpha (Phase 3c)") },
                 leadingContent = { Icon(Icons.Default.Info, contentDescription = null) }
             )
 
@@ -953,6 +1284,12 @@ fun SettingsScreen(
                 headlineContent = { Text("CTO: RNA") },
                 supportingContent = { Text("Claude Code Opus 4.5") },
                 leadingContent = { Icon(Icons.Default.Code, contentDescription = null) }
+            )
+
+            ListItem(
+                headlineContent = { Text("CSO: R") },
+                supportingContent = { Text("Manus AI") },
+                leadingContent = { Icon(Icons.Default.Security, contentDescription = null) }
             )
 
             Spacer(modifier = Modifier.weight(1f))
