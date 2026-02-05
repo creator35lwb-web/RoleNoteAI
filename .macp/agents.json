@@ -1,0 +1,30 @@
+{
+  "agents": [
+    {
+      "id": "RNA",
+      "name": "Claude Code Opus 4.5",
+      "role": "CTO",
+      "responsibilities": [
+        "Code implementation",
+        "Testing",
+        "Experiments",
+        "Android development"
+      ],
+      "active_since": "2026-01-31T00:00:00Z",
+      "last_handoff": "2026-02-01T10:30:00Z"
+    },
+    {
+      "id": "R",
+      "name": "Manus AI",
+      "role": "CSO",
+      "responsibilities": [
+        "Strategic planning",
+        "Documentation",
+        "Market research",
+        "Community building"
+      ],
+      "active_since": "2026-02-01T10:30:00Z",
+      "last_handoff": null
+    }
+  ]
+}
