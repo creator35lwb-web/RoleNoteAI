@@ -8,6 +8,7 @@
 [![Platform](https://img.shields.io/badge/Platform-Android-green.svg)](android/)
 [![Validation](https://img.shields.io/badge/Validated-VerifiMind--PEAS-purple.svg)](docs/)
 [![Phase](https://img.shields.io/badge/Phase-3a%20Complete-brightgreen.svg)](CHANGELOG.md)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18504478.svg)](https://doi.org/10.5281/zenodo.18504478)
 
 ---
 
