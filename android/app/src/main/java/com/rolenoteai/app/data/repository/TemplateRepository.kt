@@ -7,6 +7,7 @@ import com.rolenoteai.app.data.local.dao.RoleTemplateDao
 import com.rolenoteai.app.data.local.entity.RoleTemplateEntity
 import com.rolenoteai.app.data.mapper.toDomain
 import com.rolenoteai.app.domain.model.*
+import com.rolenoteai.app.domain.repository.ITemplateRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -31,27 +32,27 @@ class TemplateRepository @Inject constructor(
     @ApplicationContext private val context: Context,
     private val templateDao: RoleTemplateDao,
     private val gson: Gson
-) {
+) : ITemplateRepository {
 
     // ==================== Read Operations ====================
 
-    fun getAllTemplates(): Flow<List<RoleTemplate>> {
+    override fun getAllTemplates(): Flow<List<RoleTemplate>> {
         return templateDao.getAllTemplates().map { entities ->
             entities.map { it.toDomain() }
         }
     }
 
-    fun getTemplatesByCategory(category: TemplateCategory): Flow<List<RoleTemplate>> {
+    override fun getTemplatesByCategory(category: TemplateCategory): Flow<List<RoleTemplate>> {
         return templateDao.getTemplatesByCategory(category.value).map { entities ->
             entities.map { it.toDomain() }
         }
     }
 
-    fun getActiveTemplate(): Flow<RoleTemplate?> {
+    override fun getActiveTemplate(): Flow<RoleTemplate?> {
         return templateDao.getActiveTemplate().map { it?.toDomain() }
     }
 
-    suspend fun getTemplateById(id: String): RoleTemplate? {
+    override suspend fun getTemplateById(id: String): RoleTemplate? {
         return templateDao.getTemplateById(id)?.toDomain()
     }
 
@@ -60,7 +61,7 @@ class TemplateRepository @Inject constructor(
     /**
      * Set the active template
      */
-    suspend fun setActiveTemplate(templateId: String): Result<RoleTemplate> {
+    override suspend fun setActiveTemplate(templateId: String): Result<RoleTemplate> {
         val template = templateDao.getTemplateById(templateId)
             ?: return Result.failure(IllegalArgumentException("Template not found"))
 
@@ -73,7 +74,7 @@ class TemplateRepository @Inject constructor(
     /**
      * Save a custom template
      */
-    suspend fun saveCustomTemplate(template: RoleTemplate): Result<RoleTemplate> {
+    override suspend fun saveCustomTemplate(template: RoleTemplate): Result<RoleTemplate> {
         val entity = RoleTemplateEntity(
             id = template.id,
             name = template.name,
@@ -93,7 +94,7 @@ class TemplateRepository @Inject constructor(
     /**
      * Delete a custom template (cannot delete built-in)
      */
-    suspend fun deleteCustomTemplate(templateId: String): Result<Unit> {
+    override suspend fun deleteCustomTemplate(templateId: String): Result<Unit> {
         val template = templateDao.getTemplateById(templateId)
             ?: return Result.failure(IllegalArgumentException("Template not found"))
 
@@ -111,7 +112,7 @@ class TemplateRepository @Inject constructor(
      * Load built-in templates from assets on first launch
      * Also reloads if fewer than expected templates are found
      */
-    suspend fun initializeBuiltInTemplates() = withContext(Dispatchers.IO) {
+    override suspend fun initializeBuiltInTemplates() = withContext(Dispatchers.IO) {
         try {
             val count = templateDao.getTemplateCount()
             val expectedCount = 19 // 11 functional + 8 c-suite
@@ -189,14 +190,11 @@ class TemplateRepository @Inject constructor(
         }
     }
 
-    /**
-     * Get full template configuration including prompts
-     */
-    suspend fun getFullTemplateConfig(templateId: String): FullTemplateConfig? {
+    override suspend fun getFullTemplateConfig(templateId: String): ITemplateRepository.FullTemplateConfig? {
         val entity = templateDao.getTemplateById(templateId) ?: return null
 
         return try {
-            gson.fromJson(entity.configJson, FullTemplateConfig::class.java)
+            gson.fromJson(entity.configJson, ITemplateRepository.FullTemplateConfig::class.java)
         } catch (e: Exception) {
             e.printStackTrace()
             null
@@ -213,40 +211,5 @@ class TemplateRepository @Inject constructor(
         val category: String?,
         val icon: String?,
         val color: String?
-    )
-
-    data class FullTemplateConfig(
-        val id: String,
-        val name: String,
-        val version: String = "1.0",
-        val description: String? = null,
-        val icon: String = "note",
-        val color: String = "#3B82F6",
-        val category: String = "functional",
-        val capturePrompts: List<CapturePromptJson> = emptyList(),
-        val suggestionRules: List<SuggestionRuleJson> = emptyList(),
-        val execution: ExecutionSettingsJson = ExecutionSettingsJson()
-    )
-
-    data class CapturePromptJson(
-        val field: String,
-        val prompt: String,
-        val required: Boolean = false
-    )
-
-    data class SuggestionRuleJson(
-        val trigger: String,
-        val action: String,
-        val priority: Int = 0
-    )
-
-    data class ExecutionSettingsJson(
-        val signifiers_enabled: Boolean = true,
-        val default_signifier: String = "task",
-        val migration_prompt_days: List<Int> = listOf(3, 7, 14),
-        val weekly_review: Boolean = true,
-        val monthly_review: Boolean = true,
-        val auto_threading: Boolean = true,
-        val stale_task_threshold_days: Int = 5
     )
 }

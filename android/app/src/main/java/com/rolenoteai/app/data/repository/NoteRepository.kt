@@ -8,6 +8,11 @@ import com.rolenoteai.app.data.local.entity.MigrationEntity
 import com.rolenoteai.app.data.mapper.toDomain
 import com.rolenoteai.app.data.mapper.toEntity
 import com.rolenoteai.app.domain.model.*
+import com.rolenoteai.app.domain.repository.INoteRepository
+import com.rolenoteai.app.domain.repository.IAiService
+import com.rolenoteai.app.core.ai.VectorSearchEngine
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.util.UUID
@@ -28,55 +33,56 @@ import javax.inject.Singleton
 class NoteRepository @Inject constructor(
     private val noteDao: NoteDao,
     private val auditLogDao: AuditLogDao,
-    private val inputValidator: InputValidator
-) {
+    private val inputValidator: InputValidator,
+    private val aiService: IAiService
+) : INoteRepository {
 
     // ==================== Read Operations ====================
 
-    fun getAllNotes(): Flow<List<Note>> {
+    override fun getAllNotes(): Flow<List<Note>> {
         return noteDao.getAllNotes().map { entities ->
             entities.map { it.toDomain() }
         }
     }
 
-    fun getNotesByStatus(status: NoteStatus): Flow<List<Note>> {
+    override fun getNotesByStatus(status: NoteStatus): Flow<List<Note>> {
         return noteDao.getNotesByStatus(status.value).map { entities ->
             entities.map { it.toDomain() }
         }
     }
 
-    fun getNotesBySignifier(signifier: Signifier): Flow<List<Note>> {
+    override fun getNotesBySignifier(signifier: Signifier): Flow<List<Note>> {
         return noteDao.getNotesBySignifier(signifier.symbol).map { entities ->
             entities.map { it.toDomain() }
         }
     }
 
-    fun getNotesByProject(projectId: String): Flow<List<Note>> {
+    override fun getNotesByProject(projectId: String): Flow<List<Note>> {
         return noteDao.getNotesByProject(projectId).map { entities ->
             entities.map { it.toDomain() }
         }
     }
 
-    fun getNotesByThread(threadId: String): Flow<List<Note>> {
+    override fun getNotesByThread(threadId: String): Flow<List<Note>> {
         return noteDao.getNotesByThread(threadId).map { entities ->
             entities.map { it.toDomain() }
         }
     }
 
-    fun getNotesForDate(date: Long): Flow<List<Note>> {
+    override fun getNotesForDate(date: Long): Flow<List<Note>> {
         return noteDao.getNotesForDate(date).map { entities ->
             entities.map { it.toDomain() }
         }
     }
 
-    fun getStaleTasks(thresholdDays: Int = 3): Flow<List<Note>> {
+    override fun getStaleTasks(thresholdDays: Int): Flow<List<Note>> {
         val cutoff = System.currentTimeMillis() - (thresholdDays * 24 * 60 * 60 * 1000L)
         return noteDao.getStaleTasks(cutoff).map { entities ->
             entities.map { it.toDomain() }
         }
     }
 
-    fun searchNotes(query: String): Flow<List<Note>> {
+    override fun searchNotes(query: String): Flow<List<Note>> {
         // Validate search query
         val sanitized = inputValidator.sanitizeNoteContent(query)
         return noteDao.searchNotes(sanitized.content).map { entities ->
@@ -84,7 +90,7 @@ class NoteRepository @Inject constructor(
         }
     }
 
-    suspend fun getNoteById(id: String): Note? {
+    override suspend fun getNoteById(id: String): Note? {
         return noteDao.getNoteById(id)?.toDomain()
     }
 
@@ -93,14 +99,14 @@ class NoteRepository @Inject constructor(
     /**
      * Create a new note with validation and audit logging
      */
-    suspend fun createNote(
+    override suspend fun createNote(
         content: String,
-        signifier: Signifier = Signifier.NOTE,
-        title: String? = null,
-        roleTemplateId: String? = null,
-        roleTemplateName: String? = null,
-        projectId: String? = null,
-        tags: List<String> = emptyList()
+        signifier: Signifier,
+        title: String?,
+        roleTemplateId: String?,
+        roleTemplateName: String?,
+        projectId: String?,
+        tags: List<String>
     ): Result<Note> {
         // Validate content
         val contentValidation = inputValidator.validateNoteContent(content)
@@ -141,6 +147,16 @@ class NoteRepository @Inject constructor(
         // Save to database
         noteDao.insertNote(note.toEntity())
 
+        // Phase 3c: Generate embedding in background
+        try {
+            aiService.generateEmbedding(note.content).onSuccess { embedding ->
+                val embeddingJson = Gson().toJson(embedding)
+                noteDao.updateNoteEmbedding(note.id, embeddingJson)
+            }
+        } catch (e: Exception) {
+            // Non-critical — note is saved even without embedding
+        }
+
         // Audit log
         logAuditAction(
             entityType = "note",
@@ -155,11 +171,11 @@ class NoteRepository @Inject constructor(
     /**
      * Create note from raw input (parses signifier from content)
      */
-    suspend fun createNoteFromInput(
+    override suspend fun createNoteFromInput(
         rawInput: String,
-        roleTemplateId: String? = null,
-        roleTemplateName: String? = null,
-        projectId: String? = null
+        roleTemplateId: String?,
+        roleTemplateName: String?,
+        projectId: String?
     ): Result<Note> {
         val parsed = parseNoteInput(rawInput)
         return createNote(
@@ -174,7 +190,7 @@ class NoteRepository @Inject constructor(
     /**
      * Update an existing note
      */
-    suspend fun updateNote(note: Note): Result<Note> {
+    override suspend fun updateNote(note: Note): Result<Note> {
         val existing = noteDao.getNoteById(note.id)
             ?: return Result.failure(IllegalArgumentException("Note not found"))
 
@@ -193,6 +209,16 @@ class NoteRepository @Inject constructor(
 
         noteDao.updateNote(updated.toEntity())
 
+        // Phase 3c: Generate/update embedding in background
+        try {
+            aiService.generateEmbedding(updated.content).onSuccess { embedding ->
+                val embeddingJson = Gson().toJson(embedding)
+                noteDao.updateNoteEmbedding(updated.id, embeddingJson)
+            }
+        } catch (e: Exception) {
+            // Non-critical — note is saved even without embedding
+        }
+
         // Audit log
         logAuditAction(
             entityType = "note",
@@ -208,7 +234,7 @@ class NoteRepository @Inject constructor(
     /**
      * Mark note as complete
      */
-    suspend fun completeNote(noteId: String): Result<Note> {
+    override suspend fun completeNote(noteId: String): Result<Note> {
         val note = noteDao.getNoteById(noteId)
             ?: return Result.failure(IllegalArgumentException("Note not found"))
 
@@ -232,10 +258,10 @@ class NoteRepository @Inject constructor(
     /**
      * Migrate note (BuJo-style)
      */
-    suspend fun migrateNote(
+    override suspend fun migrateNote(
         noteId: String,
-        newDate: Long? = null,
-        reason: String? = null
+        newDate: Long?,
+        reason: String?
     ): Result<Note> {
         val note = noteDao.getNoteById(noteId)
             ?: return Result.failure(IllegalArgumentException("Note not found"))
@@ -273,7 +299,7 @@ class NoteRepository @Inject constructor(
     /**
      * Cancel note
      */
-    suspend fun cancelNote(noteId: String, reason: String? = null): Result<Note> {
+    override suspend fun cancelNote(noteId: String, reason: String?): Result<Note> {
         val note = noteDao.getNoteById(noteId)
             ?: return Result.failure(IllegalArgumentException("Note not found"))
 
@@ -294,7 +320,7 @@ class NoteRepository @Inject constructor(
     /**
      * Delete note
      */
-    suspend fun deleteNote(noteId: String): Result<Unit> {
+    override suspend fun deleteNote(noteId: String): Result<Unit> {
         val note = noteDao.getNoteById(noteId)
             ?: return Result.failure(IllegalArgumentException("Note not found"))
 
@@ -311,12 +337,58 @@ class NoteRepository @Inject constructor(
         return Result.success(Unit)
     }
 
-    // ==================== Signifier Parsing ====================
+    // ==================== Semantic Context (Phase 3c) ====================
 
-    data class ParsedNoteInput(
-        val signifier: Signifier,
-        val content: String
-    )
+    /**
+     * Retrieve semantically similar notes using vector search with time-decay.
+     * Uses ONNX MiniLM embeddings + VectorSearchEngine cosine scoring.
+     */
+    override suspend fun retrieveSemanticContext(query: String, limit: Int): List<Note> {
+        return try {
+            // Generate query embedding
+            val queryEmbedding = aiService.generateEmbedding(query).getOrElse {
+                return emptyList()
+            }
+
+            // Fetch all notes with stored embeddings
+            val notesWithEmbeddings = noteDao.getNotesWithEmbeddings()
+            if (notesWithEmbeddings.isEmpty()) return emptyList()
+
+            val gson = Gson()
+            val floatArrayType = object : TypeToken<FloatArray>() {}.type
+            val now = System.currentTimeMillis()
+            val hourMs = 3_600_000L
+
+            // Build candidates: (noteId, embedding, ageInHours)
+            val candidates = notesWithEmbeddings.mapNotNull { entity ->
+                val embedding: FloatArray? = try {
+                    gson.fromJson(entity.embedding, floatArrayType)
+                } catch (e: Exception) {
+                    null
+                }
+                if (embedding != null) {
+                    val ageHours = ((now - entity.createdAt) / hourMs).toInt()
+                    Triple(entity.id, embedding, ageHours)
+                } else null
+            }
+
+            // Run vector search with time-decay
+            val topResults = VectorSearchEngine.topK(
+                query = queryEmbedding,
+                candidates = candidates,
+                topK = limit
+            )
+
+            // Fetch full notes by ID
+            topResults.mapNotNull { (noteId, _) ->
+                noteDao.getNoteById(noteId)?.toDomain()
+            }
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    // ==================== Signifier Parsing ====================
 
     /**
      * Parse raw input to extract signifier and content
@@ -325,10 +397,10 @@ class NoteRepository @Inject constructor(
      * - "! Urgent deadline" -> PRIORITY, "Urgent deadline"
      * - "Just a note" -> NOTE, "Just a note"
      */
-    fun parseNoteInput(rawInput: String): ParsedNoteInput {
+    override fun parseNoteInput(rawInput: String): INoteRepository.ParsedNoteInput {
         val trimmed = rawInput.trim()
         if (trimmed.isEmpty()) {
-            return ParsedNoteInput(Signifier.NOTE, "")
+            return INoteRepository.ParsedNoteInput(Signifier.NOTE, "")
         }
 
         val firstChar = trimmed.first().toString()
@@ -337,26 +409,26 @@ class NoteRepository @Inject constructor(
         return if (signifier != null) {
             // Remove signifier and leading whitespace
             val content = trimmed.drop(1).trimStart()
-            ParsedNoteInput(signifier, content)
+            INoteRepository.ParsedNoteInput(signifier, content)
         } else {
             // No signifier found, treat as note
-            ParsedNoteInput(Signifier.NOTE, trimmed)
+            INoteRepository.ParsedNoteInput(Signifier.NOTE, trimmed)
         }
     }
 
     // ==================== Statistics ====================
 
-    suspend fun getCompletedCount(sinceDaysAgo: Int = 7): Int {
+    override suspend fun getCompletedCount(sinceDaysAgo: Int): Int {
         val since = System.currentTimeMillis() - (sinceDaysAgo * 24 * 60 * 60 * 1000L)
         return noteDao.getCompletedCount(since)
     }
 
-    suspend fun getCancelledCount(sinceDaysAgo: Int = 7): Int {
+    override suspend fun getCancelledCount(sinceDaysAgo: Int): Int {
         val since = System.currentTimeMillis() - (sinceDaysAgo * 24 * 60 * 60 * 1000L)
         return noteDao.getCancelledCount(since)
     }
 
-    suspend fun getAverageMigrationCount(sinceDaysAgo: Int = 30): Float {
+    override suspend fun getAverageMigrationCount(sinceDaysAgo: Int): Float {
         val since = System.currentTimeMillis() - (sinceDaysAgo * 24 * 60 * 60 * 1000L)
         return noteDao.getAverageMigrationCount(since) ?: 0f
     }

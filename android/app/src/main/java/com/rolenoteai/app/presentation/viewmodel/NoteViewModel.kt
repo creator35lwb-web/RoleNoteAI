@@ -2,7 +2,7 @@ package com.rolenoteai.app.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.rolenoteai.app.data.repository.NoteRepository
+import com.rolenoteai.app.domain.repository.INoteRepository
 import com.rolenoteai.app.domain.model.Note
 import com.rolenoteai.app.domain.model.NoteStatus
 import com.rolenoteai.app.domain.model.Signifier
@@ -20,7 +20,7 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class NoteViewModel @Inject constructor(
-    private val noteRepository: NoteRepository
+    private val noteRepository: INoteRepository
 ) : ViewModel() {
 
     // ==================== State ====================

@@ -10,6 +10,10 @@ import com.rolenoteai.app.data.local.RoleNoteDatabase
 import com.rolenoteai.app.data.local.dao.*
 import com.rolenoteai.app.data.repository.NoteRepository
 import com.rolenoteai.app.data.repository.TemplateRepository
+import com.rolenoteai.app.data.repository.AiService
+import com.rolenoteai.app.domain.repository.INoteRepository
+import com.rolenoteai.app.domain.repository.ITemplateRepository
+import com.rolenoteai.app.domain.repository.IAiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -109,6 +113,16 @@ object AppModule {
             .create()
     }
 
+    // ==================== AI Service (Phase 3c) ====================
+
+    @Provides
+    @Singleton
+    fun provideAiService(
+        @ApplicationContext context: Context
+    ): IAiService {
+        return AiService(context)
+    }
+
     // ==================== Repositories ====================
 
     @Provides
@@ -116,9 +130,10 @@ object AppModule {
     fun provideNoteRepository(
         noteDao: NoteDao,
         auditLogDao: AuditLogDao,
-        inputValidator: InputValidator
-    ): NoteRepository {
-        return NoteRepository(noteDao, auditLogDao, inputValidator)
+        inputValidator: InputValidator,
+        aiService: IAiService
+    ): INoteRepository {
+        return NoteRepository(noteDao, auditLogDao, inputValidator, aiService)
     }
 
     @Provides
@@ -127,7 +142,7 @@ object AppModule {
         @ApplicationContext context: Context,
         roleTemplateDao: RoleTemplateDao,
         gson: Gson
-    ): TemplateRepository {
+    ): ITemplateRepository {
         return TemplateRepository(context, roleTemplateDao, gson)
     }
 }

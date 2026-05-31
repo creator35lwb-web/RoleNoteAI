@@ -63,6 +63,9 @@ interface NoteDao {
     """)
     fun searchNotes(query: String): Flow<List<NoteEntity>>
 
+    @Query("SELECT * FROM notes WHERE embedding IS NOT NULL")
+    suspend fun getNotesWithEmbeddings(): List<NoteEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertNote(note: NoteEntity)
 

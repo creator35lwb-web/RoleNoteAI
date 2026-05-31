@@ -2,7 +2,7 @@ package com.rolenoteai.app.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.rolenoteai.app.data.repository.TemplateRepository
+import com.rolenoteai.app.domain.repository.ITemplateRepository
 import com.rolenoteai.app.domain.model.RoleTemplate
 import com.rolenoteai.app.domain.model.TemplateCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +19,7 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class TemplateViewModel @Inject constructor(
-    private val templateRepository: TemplateRepository
+    private val templateRepository: ITemplateRepository
 ) : ViewModel() {
 
     // ==================== State ====================
@@ -165,5 +165,5 @@ data class TemplateUiState(
     val isLoading: Boolean = false,
     val error: String? = null,
     val lastSelectedTemplate: RoleTemplate? = null,
-    val currentTemplateConfig: TemplateRepository.FullTemplateConfig? = null
+    val currentTemplateConfig: ITemplateRepository.FullTemplateConfig? = null
 )

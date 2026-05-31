@@ -1,6 +1,7 @@
 // RoleNote AI - App Build Configuration
-// CTO: RNA (Claude Code Opus 4.5)
-// Fixed for Android Studio compatibility
+// CTO: RNA | CEO: L (Godel)
+// Phase 3c: Local Android AI Engine (Gemma 3 + ONNX MiniLM + GIFP Drift Gov)
+// Council Clearance: VerifiMind PEAS 8.6/10 | Session 7437f880 | 2026-05-20
 
 plugins {
     id("com.android.application")
@@ -71,6 +72,10 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    testOptions {
+        unitTests.isReturnDefaultValues = true
+    }
 }
 
 dependencies {
@@ -111,6 +116,12 @@ dependencies {
     ksp("com.google.dagger:hilt-compiler:2.48.1")
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
 
+    // ==================== Local AI — Phase 3c ====================
+    // Gemma 3 on-device inference via MediaPipe Tasks GenAI
+    implementation("com.google.mediapipe:tasks-genai:0.10.15")
+    // ONNX Runtime for MiniLM sentence embeddings (vector memory)
+    implementation("com.microsoft.onnxruntime:onnxruntime-android:1.17.0")
+
     // ==================== JSON Parsing ====================
     implementation("com.google.code.gson:gson:2.10.1")
 
@@ -123,6 +134,8 @@ dependencies {
     // ==================== Testing ====================
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    testImplementation("org.mockito:mockito-core:5.8.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.10.01"))
