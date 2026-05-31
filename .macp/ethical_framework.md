@@ -1,1 +1,0 @@
-../docs/L_GODEL_Ethical_Operating_Framework.md
