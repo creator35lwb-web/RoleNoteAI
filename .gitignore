@@ -125,3 +125,6 @@ DerivedData/
 backups/
 *.bak
 *.backup
+
+# ==================== Internal Strategy ====================
+iteration/
