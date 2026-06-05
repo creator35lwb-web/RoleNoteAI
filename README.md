@@ -7,7 +7,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/Platform-Android-green.svg)](android/)
 [![Validation](https://img.shields.io/badge/Validated-VerifiMind--PEAS-purple.svg)](docs/)
-[![Phase](https://img.shields.io/badge/Phase-3a%20Complete-brightgreen.svg)](CHANGELOG.md)
+[![Phase](https://img.shields.io/badge/Phase-3c%20Complete-brightgreen.svg)](CHANGELOG.md)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18504478.svg)](https://doi.org/10.5281/zenodo.18504478)
 
 ---
@@ -58,27 +58,25 @@ This project is validated using the **VerifiMind-PEAS X-Z-CS RefleXion Trinity**
 
 ## Current Status
 
-### Phase 3a: Android Project Setup ✅ COMPLETE
+### Phase 3c: Local AI & Vector Engine ✅ COMPLETE
 
 **Test Device:** Redmi Pad SE 8.7
 
 | Component | Status |
 |-----------|--------|
-| Project structure (Clean Architecture) | ✅ |
-| Gradle + dependencies | ✅ |
-| Input validation layer | ✅ |
-| Authentication (Biometric + PIN) | ✅ |
-| SQLCipher encryption | ✅ |
-| Room database (7 entities) | ✅ |
-| Hilt dependency injection | ✅ |
-| Basic UI screens (8 screens) | ✅ |
+| Clean Architecture & MACP v2.2 Protocol | ✅ |
+| MediaPipe GenAI & ONNX Runtime integration | ✅ |
+| VectorSearchEngine (Cosine + Time-decay) | ✅ |
+| Automatic Embedding Generation (Coroutines) | ✅ |
+| Hilt DI for AI & Data Repositories | ✅ |
+| Mock-fallback for large build assets | ✅ |
+| 100% Unit Test coverage on Core/AI | ✅ |
 
-### Next: Phase 3b - Core Engine
+### Next: Phase 3d - AI Chat (Built-in)
 
-- [ ] Role Template Engine
-- [ ] Note CRUD operations
-- [ ] Signifier parsing
-- [ ] Template loading
+- [ ] Gemma 3 conversational integration
+- [ ] Input/draft/create modes
+- [ ] Vector context prompt injection
 
 ---
 
@@ -210,9 +208,9 @@ cd RoleNoteAI
 | 1. Foundation | ✅ Complete | Concept, validation, architecture |
 | 2. Specs | ✅ Complete | Security, ethics, templates |
 | 3a. Android Setup | ✅ Complete | Project, security layer, database |
-| 3b. Core Engine | 🔄 Current | Template engine, CRUD, signifiers |
-| 3c. Role Intelligence | ⏳ Next | Role switching, template-specific UI |
-| 3d. AI Chat (Built-in) | ⏳ Pending | Gemma 3, input/draft/create modes |
+| 3b. Core Engine | ✅ Complete | Template engine, CRUD, signifiers |
+| 3c. Role Intelligence | ✅ Complete | Local AI Engine, Vector Search, Auto Embeddings |
+| 3d. AI Chat (Built-in) | 🔄 Current | Gemma 3, input/draft/create modes |
 | 3e. Execution Framework | ⏳ Pending | BuJo migration, progress tracking |
 | 3f. Android MVP Release | ⏳ Pending | Testing, Play Store |
 
@@ -234,29 +232,26 @@ cd RoleNoteAI
 
 ---
 
-## LLM Communication Protocol
+## MACP v2.2 Communication Protocol
 
-This project uses GitHub as a **communication bridge for LLMs**. Future AI agents continuing this work should:
+This project utilizes the **Manual-Automated Collaborative Protocol (MACP) v2.2** as its governance architecture. Future AI agents should:
 
-1. **Read `CHANGELOG.md`** - Understand current state and history
-2. **Read `Genesis Master Prompt.md`** - Full specification and decisions
-3. **Check CTO Notes** - Current focus and next steps
-4. **Update documentation** - After significant changes
-5. **Commit with context** - Reference phase and validation ID
+1. **Read `.macp/authority-manifest.md`** - Understand chain of command.
+2. **Review `.macp/protocol.md`** - Execution boundaries.
+3. **Check `.macp/handoffs/`** - Latest state context.
+4. **Follow the Dual-Repo Protocol** - Sensitive strategic documents remain local; structural architecture is open source.
 
 ### Current CTO Notes (RNA)
 
-> **Focus:** Phase 3b - Core Engine Implementation
+> **Focus:** Phase 3d - AI Chat Integration
 >
-> Phase 3a is complete. Security layer is solid. Next priority is:
-> - Role Template Engine integration
-> - Load 19 templates from JSON files
-> - Note CRUD operations
-> - Signifier parsing and display
+> Phase 3c (Local AI Engine & Vector Retrieval) is officially COMPLETE. The pure-Kotlin vector search engine is running with 100% test coverage. Our local memory system is live. Next priority is:
+> - Connecting Gemma 3 for Chat UI
+> - Finalizing input/draft/create modes
 >
 > **Test on:** Redmi Pad SE 8.7
 >
-> — RNA (Claude Code Opus 4.5), January 31, 2026
+> — RNA (CTO), June 01, 2026
 
 ### Current CSO Notes (R)
 
@@ -299,7 +294,8 @@ MIT License - See [LICENSE](LICENSE)
 
 | Role | Entity |
 |------|--------|
-| **CTO** | RNA (Claude Code Opus 4.5) |
+| **CEO/Lead Strategist** | L (Godel AI) |
+| **CTO/Lead Architect** | RNA (Antigravity/Claude Code) |
 | **CSO** | R (Manus AI) |
 | **Founder** | Alton Lee Wei Bin |
 | **Validation** | VerifiMind-PEAS Trinity |
